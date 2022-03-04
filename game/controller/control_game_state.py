@@ -1,4 +1,3 @@
-from turtle import screensize
 import pygame
 import sys
 from game.controller.settings import *
@@ -15,6 +14,8 @@ def start_game():
     icon_surf = pygame.image.load(
         'assets/images/misc/game_icon.png').convert_alpha()
     icon = pygame.display.set_icon(icon_surf)
+
+    current_state = 1
 
     while True:
         for event in pygame.event.get():
