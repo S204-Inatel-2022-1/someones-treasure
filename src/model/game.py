@@ -1,28 +1,13 @@
-from cProfile import run
-import pygame as pg
-import sys
-from src.controller.settings import *
-from src.model.level import Level
+import pygame
+from src.helper.settings import WINDOW_SIZE
 
 
 class Game():
     def __init__(self):
-        pg.init()
-        self.screen = pg.display.set_mode(SIZE)
-        self.clock = pg.time.Clock()
-        pg.display.set_caption(TITLE)
-        file = 'assets/img/misc/game_icon.png'
-        pg.display.set_icon(pg.image.load(file).convert_alpha())
-        self.level = Level()
+        self.window = pygame.display.set_mode(WINDOW_SIZE)
+        pygame.display.set_caption("Someone's Treasure")
+        file_name = 'assets/img/sprites/game_icon.png'
+        pygame.display.set_icon(pygame.image.load(file_name).convert_alpha())
+        # Hm...
+        self.clock = pygame.time.Clock()
         self.running = True
-
-    def start(self):
-        while self.running:
-            for event in pg.event.get():
-                if event.type == pg.QUIT:
-                    pg.quit()
-                    sys.exit()
-            self.screen.fill(CUSTOM_COLOR)
-            self.level.run()
-            pg.display.update()
-            self.clock.tick(60)

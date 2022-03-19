@@ -1,68 +1,68 @@
-from tkinter import HORIZONTAL
-import pygame as pg
+import pygame
+from src.helper.settings import TILE_SIZE, PLAYER_SPEED
 
 
-class Player(pg.sprite.Sprite):
-    def __init__(self, position: tuple, groups: pg.sprite.Group,
-                 obstacles: pg.sprite.Group):
-        super().__init__(groups)
-        file = 'assets/img/sprites/player.png'
-        self.image = pg.image.load(file).convert_alpha()
-        self.rect = self.image.get_rect(topleft=position)
-        self.direction = pg.math.Vector2()
-        self.speed = 5
-        self.obstacles = obstacles
-        x, y = 0, -26
-        self.hitbox = self.rect.inflate(x, y)
+class Player(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.walk_buffer = 50
+        self.pos = pygame.math.Vector2(x, y) * TILE_SIZE
+        self.dirvec = pygame.math.Vector2(0, 0)
+        self.last_pos = self.pos
+        self.next_pos = self.pos
 
-    def input(self):
-        keys = pg.key.get_pressed()
-        # Vertical Axis
-        if keys[pg.K_UP]:
-            self.direction.y = -1
-        elif keys[pg.K_DOWN]:
-            self.direction.y = 1
-        else:
-            self.direction.y = 0
-        # Horinzontal Axis
-        if keys[pg.K_RIGHT]:
-            self.direction.x = 1
-        elif keys[pg.K_LEFT]:
-            self.direction.x = -1
-        else:
-            self.direction.x = 0
+        self.current_frame = 0
+        self.last_update = pygame.time.get_ticks()
+        self.between_tiles = False
 
-    def move(self, speed):
-        if self.direction.magnitude() != 0:
-            self.direction = self.direction.normalize()
-        self.hitbox.x += self.direction.x * speed
-        self.collision('x')
-        self.hitbox.y += self.direction.y * speed
-        self.collision('y')
-        self.rect.center = self.hitbox.center
+        self.image = pygame.Surface((TILE_SIZE, TILE_SIZE))
+        self.image.fill((255, 0, 0))
+        self.rect = self.image.get_rect(topleft=(self.pos.x, self.pos.y))
 
-    def collision(self, axis):
-        if axis == 'x':
-            # Horizontal Collisions
-            for obstacle in self.obstacles:
-                if obstacle.hitbox.colliderect(self.hitbox):
-                    if self.direction.x > 0:
-                        # Right
-                        self.hitbox.right = obstacle.hitbox.left
-                    elif self.direction.x < 0:
-                        # Left
-                        self.hitbox.left = obstacle.hitbox.right
-        elif axis == 'y':
-            # Vertical Collisions
-            for obstacle in self.obstacles:
-                if obstacle.hitbox.colliderect(self.hitbox):
-                    if self.direction.y > 0:
-                        # Down
-                        self.hitbox.bottom = obstacle.hitbox.top
-                    elif self.direction.y < 0:
-                        # Up
-                        self.hitbox.top = obstacle.hitbox.bottom
+    def update(self, dt, walls):
+        self.get_keys()
+        self.rect = self.image.get_rect(topleft=(self.pos.x, self.pos.y))
 
-    def update(self):
-        self.input()
-        self.move(self.speed)
+        if self.pos != self.next_pos:
+
+            delta = self.next_pos - self.pos
+            if delta.length() > (self.dirvec * PLAYER_SPEED * dt).length():
+                self.pos += self.dirvec * PLAYER_SPEED * dt
+            else:
+                self.pos = self.next_pos
+                self.dirvec = pygame.math.Vector2(0, 0)
+                self.between_tiles = False
+
+        self.rect.topleft = self.pos
+        if pygame.sprite.spritecollide(self, walls, False):
+            self.pos = self.last_pos
+            self.next_pos = self.last_pos
+            self.dirvec = pygame.math.Vector2(0, 0)
+            self.between_tiles = False
+        self.rect.topleft = self.pos
+
+    def get_keys(self):
+        now = pygame.time.get_ticks()
+        keys = pygame.key.get_pressed()
+
+        if now - self.last_update > self.walk_buffer:
+            self.last_update = now
+
+            new_dir_vec = pygame.math.Vector2(0, 0)
+            if self.dirvec.y == 0:
+                if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+                    new_dir_vec = pygame.math.Vector2(-1, 0)
+                elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+                    new_dir_vec = pygame.math.Vector2(1, 0)
+            if self.dirvec.x == 0:
+                if keys[pygame.K_UP] or keys[pygame.K_w]:
+                    new_dir_vec = pygame.math.Vector2(0, -1)
+                elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
+                    new_dir_vec = pygame.math.Vector2(0, 1)
+
+            if new_dir_vec != pygame.math.Vector2(0, 0):
+                self.dirvec = new_dir_vec
+                self.between_tiles = True
+                current_index = self.rect.centerx // TILE_SIZE, self.rect.centery // TILE_SIZE
+                self.last_pos = pygame.math.Vector2(current_index) * TILE_SIZE
+                self.next_pos = self.last_pos + self.dirvec * TILE_SIZE
