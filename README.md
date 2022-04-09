@@ -1,3 +1,3 @@
 # Someone's Treasure
 
-Descrição em breve.
+Jogo ortogonal inspirado por The Legend of Zelda e Titan Souls. Em breve!
