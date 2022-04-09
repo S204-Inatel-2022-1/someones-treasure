@@ -1,5 +1,7 @@
 import pygame as pg
 
+# eu odeio absolutamente tudo
+
 
 class Enemy(pg.sprite.Group):
     '''
