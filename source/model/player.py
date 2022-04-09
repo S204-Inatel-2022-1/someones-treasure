@@ -8,8 +8,6 @@ class Player(pg.sprite.Sprite):
         self.obstacles = obstacles
         image_path = "assets/images/player/ratinho.png"
         self.image = pg.image.load(image_path).convert_alpha()
-        # self.image = pg.Surface((TILE_SIZE, TILE_SIZE))
-        # self.image.fill("red")
         self.rect = self.image.get_rect(topleft=position)
         self.hitbox = self.rect.inflate(0, - TILE_SIZE // 4)
         self.direction = pg.math.Vector2(0, 0)
@@ -17,11 +15,10 @@ class Player(pg.sprite.Sprite):
 
     def update(self):
         self.input()
-        self.move(self.speed)
+        self.move()
 
     def input(self):
         self.direction = pg.math.Vector2(0, 0)
-        # if pg.event.type == pg.KEYDOWN:
         keys = pg.key.get_pressed()
         if keys[pg.K_w] or keys[pg.K_UP]:
             self.direction.y = -1
@@ -32,12 +29,12 @@ class Player(pg.sprite.Sprite):
         if keys[pg.K_d] or keys[pg.K_RIGHT]:
             self.direction.x = 1
 
-    def move(self, speed):
-        if self.direction.magnitude() != 0:
+    def move(self):
+        if self.direction.magnitude() > 1:
             self.direction = self.direction.normalize()
-        self.hitbox.x += self.direction.x * speed
+        self.hitbox.x += self.direction.x * self.speed
         self.collision("x")
-        self.hitbox.y += self.direction.y * speed
+        self.hitbox.y += self.direction.y * self.speed
         self.collision("y")
         self.rect.center = self.hitbox.center
 
