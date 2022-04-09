@@ -2,6 +2,12 @@
 
 ## Casos de Uso
 
-Para detalhes mais específicos de cada caso de uso, acesse [`use-cases/`](use-cases/), onde cada subpasta possui coleções de pastas representando os atores principais do sistema.
+### Introdução
 
-Cada pasta com um ator, possui outras subpastas com casos de usos específicos, cada uma com um arquivo `README.md` próprio, contendo um **diagrama de caso de uso** com suas **especificações**.
+A documentação deste projeto é feita através de casos de usos, com seus respetivos diagramas e especificações (ou descriçÕes).
+
+Para visualizar estes casos de uso, segue o índice abaixo, que contém cada funcionalidade do sistema atrelada a um ator principal.
+
+### Índice
+
+1. [Movimentação do Personagem Jogável](player/movement/)
