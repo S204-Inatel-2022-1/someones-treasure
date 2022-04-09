@@ -50,3 +50,7 @@ O Jogador pode fazer com que seu personagem realize um ataque de espada (_melee 
 Caso o PJ esteja na linha de visão de um Monstro, este caminhará na direção dele, atacando-o na primeira oportunidade. O padrão de ataque varia de acordo com o tipo de monstro. Por exemplo, slimes colidem e causam envenenamento, esqueletos atacam com armas etc.
 
 **Obs.:** Pode ser interessante fazer com que as bombas quebre certas parede, revelando passagens secretas em algum momento, mas isso faria parte de "Interações".
+
+## Especificações de Casos de Uso
+
+Estes [documentos textuais](specifications/) representam cada ação individualmente com mais detalhes, com base no diagrama principal de casos de uso.
