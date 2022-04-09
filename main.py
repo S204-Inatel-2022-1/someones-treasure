@@ -1,5 +1,4 @@
-from src.controller.run import run
-
+from source.controller.start import start
 
 if __name__ == '__main__':
-    run()
+    start()
