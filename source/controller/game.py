@@ -1,41 +1,39 @@
 import pygame as pg
 import sys
-from source.controller.settings import *
-from source.model.level import Level
-from source.tests.debug import display_grid
+from source.helper.settings import RESOLUTION, FPS
+from source.view.level import Level
 
 
-class Game:
+class Game(object):
     def __init__(self):
+        pg.init()
         self.screen = pg.display.set_mode(RESOLUTION)
         self.title = pg.display.set_caption("Someone's Treasure")
-        img = pg.image.load("assets/images/icon.png").convert_alpha()
+        img_path = "assets/images/icon.png"
+        img = pg.image.load(img_path).convert_alpha()
         self.icon = pg.display.set_icon(img)
         self.clock = pg.time.Clock()
-        self.fps = FPS
-        self.running = True
-        self.level = Level()
+        self.level = Level(0)
 
     def run(self):
-        while self.running:
-            self.clock.tick(self.fps)
-            self.events()
-            self.update()
-            self.draw()
-        pg.quit()
-        sys.exit()
+        while True:
+            self.clock.tick(FPS)
+            self.__set_events__()
+            self.__update__()
+            self.__draw__()
 
-    def events(self):
+    def __set_events__(self):
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.running = False
+                print("GAME OVER!\n")
+                pg.quit()
+                sys.exit()
 
-    def update(self):
+    def __update__(self):
         self.level.update()
-        pass
 
-    def draw(self):
+    def __draw__(self):
         self.screen.fill("#42393a")
         self.level.draw()
-        # display_grid()
         pg.display.flip()
