@@ -1,4 +1,8 @@
-from source.controller.start import start
+from source.controller.game import Game
+from source.helper.console import cls
+
 
 if __name__ == '__main__':
-    start()
+    cls()
+    game = Game()
+    game.run()
