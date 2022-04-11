@@ -34,6 +34,6 @@ class Game(object):
         self.level.update()
 
     def __draw__(self):
-        self.screen.fill("#42393a")
+        self.screen.fill("black")
         self.level.draw()
         pg.display.flip()
