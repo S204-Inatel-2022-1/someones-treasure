@@ -8,8 +8,8 @@ class Camera(pg.sprite.Group):
         self.half_width = self.display_surface.get_width() // 2
         self.half_height = self.display_surface.get_height() // 2
         self.offset = pg.math.Vector2()
-        image_path = "assets/images/map/level_0.png"
-        self.floor_surface = pg.image.load(image_path).convert()
+        img_path = "assets/images/map/level_0.png"
+        self.floor_surface = pg.image.load(img_path).convert()
         self.floor_rect = self.floor_surface.get_rect(topleft=(0, 0))
 
     def custom_draw(self, player: pg.sprite.Sprite):
