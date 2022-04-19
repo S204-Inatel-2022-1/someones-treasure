@@ -10,4 +10,4 @@ Para visualizar estes casos de uso, segue o índice abaixo, que contém cada fun
 
 ### Índice
 
-1. [Movimentação do Personagem Jogável](player/movement/)
+1. [Movimento do Personagem Jogável](use-cases/movement.md)

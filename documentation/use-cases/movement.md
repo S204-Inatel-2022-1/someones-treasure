@@ -1,7 +1,5 @@
 # Movimento do Personagem Jogável
 
-![Diagrama de Caso de Uso](diagram.png)
-
 ## Descrição
 
 Com o teclado, o jogador tenta mover seu personagem por uma superfície 2D. O sistema verifica como prosseguir, podendo deslocar o personagem do jogador ou fazê-lo colidir com um bloco sólido, fazê-lo sofrer dano ou até mesmo mata-lo.
