@@ -1,3 +1,2 @@
 pygame>=2.1.2
 numpy>=1.22.2
-overrides>=6.1.0
