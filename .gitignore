@@ -1,11 +1,5 @@
 # Custom
-reference/
-logs.txt
-testando.py
-raw/
-tiled/
-tilesets/
-temp/
+trash/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
