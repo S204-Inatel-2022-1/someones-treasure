@@ -4,6 +4,8 @@
 
 This is an orthogonal game made entirely in Python using Pygame. It was inspired by games like The Legend of Zelda and Titan Souls.
 
+My idea is to make a labyrinth game with a few levels, a basic crafting system, a few enemies and a boss.
+
 ## Installation
 
 Download the project folder (`.zip`), extract it and run `someones-treasure.exe`.
