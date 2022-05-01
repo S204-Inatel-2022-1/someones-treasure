@@ -1,7 +1,7 @@
 import pygame as pg
 import sys
-from source.helper.settings import RESOLUTION, FPS
-from source.view.level import Level
+from source.utils.settings import RESOLUTION, FPS
+from source.controller.map import Map
 
 
 class Game(object):
@@ -9,31 +9,31 @@ class Game(object):
         pg.init()
         self.screen = pg.display.set_mode(RESOLUTION)
         self.title = pg.display.set_caption("Someone's Treasure")
-        img_path = "assets/images/icon.png"
-        img = pg.image.load(img_path).convert_alpha()
+        img = pg.image.load("assets/images/game-icon.png").convert_alpha()
         self.icon = pg.display.set_icon(img)
         self.clock = pg.time.Clock()
-        self.level = Level(0)
+        self.map = Map()
 
     def run(self):
         while True:
             self.clock.tick(FPS)
-            self.__set_events__()
-            self.__update__()
-            self.__draw__()
+            self._handle_events()
+            self._update()
+            self._draw()
 
-    def __set_events__(self):
+    def _handle_events(self):
         for event in pg.event.get():
-            if event.type == pg.QUIT:
+            if event.type == pg.QUIT or (event.type == pg.KEYDOWN and
+                                         event.key == pg.K_ESCAPE):
                 self.running = False
                 print("GAME OVER!\n")
                 pg.quit()
                 sys.exit()
 
-    def __update__(self):
-        self.level.update()
+    def _update(self):
+        self.map.update()
 
-    def __draw__(self):
+    def _draw(self):
         self.screen.fill("black")
-        self.level.draw()
+        self.map.draw()
         pg.display.flip()
