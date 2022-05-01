@@ -1,6 +1,6 @@
 import numpy as np
 import pygame as pg
-from source.utils.asset_management import import_folder
+from source.utils.manage_assets import import_folder
 from source.utils.settings import TILE_SIZE
 
 
