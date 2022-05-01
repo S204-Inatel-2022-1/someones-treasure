@@ -2,6 +2,10 @@ import pygame as pg
 from source.model.tile import Tile
 from source.utils.settings import TILE_SIZE
 
+'''
+This Class will be translated into a TNT barrel or something like that.
+'''
+
 
 class Bomb(Tile):
     def __init__(self, groups, pos):
