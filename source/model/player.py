@@ -31,10 +31,6 @@ class Player(Entity):
             if current_time - self.attack_update >= self.attack_cd:
                 self.attacking = False
                 self._finish_attack()
-        if self.active_bomb:
-            if current_time - self.bomb_update >= self.fuse_time:
-                self.active_bomb = False
-                self.bomb.detonate()
 
     def _movement_input(self, keys: pg.key.ScancodeWrapper):
         # Vertical
