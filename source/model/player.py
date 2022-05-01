@@ -1,6 +1,5 @@
 import pygame as pg
 from source.model.attack import Attack
-from source.model.bomb import Bomb
 from source.model.entity import Entity
 
 
@@ -12,11 +11,6 @@ class Player(Entity):
         self.attacking = False
         self.attack_cd = 400
         self.attack_update = pg.time.get_ticks()
-        # Bomb
-        self.bomb_count = 3
-        self.active_bomb = False
-        self.fuse_time = 1000
-        self.bomb_update = pg.time.get_ticks()
 
     def update(self):
         self._input()
@@ -67,12 +61,6 @@ class Player(Entity):
             self.attacking = True
             self.attack_update = pg.time.get_ticks()
             self._initiate_attack()
-        if not self.active_bomb:
-            if keys[pg.K_SPACE] and self.bomb_count > 0:
-                self.active_bomb = True
-                self.bomb_count -= 1
-                self.bomb_update = pg.time.get_ticks()
-                self._place_bomb()
 
     def _initiate_attack(self):
         self.current_attack = Attack(self.groups(), self.state, self.rect)
@@ -81,6 +69,3 @@ class Player(Entity):
         if self.current_attack:
             self.current_attack.kill()
         self.current_attack = None
-
-    def _place_bomb(self):
-        self.bomb = Bomb([self.groups()], self.rect.center)
