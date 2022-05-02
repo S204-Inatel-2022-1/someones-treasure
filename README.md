@@ -18,7 +18,7 @@ Maps were created in [Tiled](https://www.mapeditor.org/), and the sprites were e
 
 ## Documentation
 
-Please check this repository's [Wiki]().
+Please check this repository's [Wiki](https://github.com/S204-Inatel-2022-1/someones-treasure/wiki).
 
 ## Special Thanks
 
