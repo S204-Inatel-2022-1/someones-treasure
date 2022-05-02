@@ -6,19 +6,23 @@ This is an orthogonal game made entirely in Python using Pygame. It was inspired
 
 My idea is to make a labyrinth game with a few levels, a basic crafting system, a few enemies and a boss.
 
-## Installation
-
-Download the project folder (`.zip`), extract it and run `someones-treasure.exe`.
-
 ## Technologies
 
 The code was made entirely in [Python 3](https://www.python.org/) with [Pygame](https://www.pygame.org/). I also used [numpy](https://numpy.org/) for some lesser functionalities.
 
 Maps were created in [Tiled](https://www.mapeditor.org/), and the sprites were either created with [Aseprite](https://www.aseprite.org/) or downloaded from [OpenGameArt](https://opengameart.org/). See credits in the [`assets/`](assets/) folder.
 
+## Installation
+
+1. Download [Python 3](https://www.python.org/).
+2. Download the project folder (`.zip`) and extract it somewhere.
+3. In the console, open the game directory and type `python -m pip install -r requirements.txt`, then press ENTER;
+4. Still at the console, type `python main.py` and press ENTER once again;
+5. Have fun!
+
 ## Documentation
 
-Please check this repository's [Wiki]().
+Please check this repository's [Wiki](https://github.com/S204-Inatel-2022-1/someones-treasure/wiki).
 
 ## Special Thanks
 
