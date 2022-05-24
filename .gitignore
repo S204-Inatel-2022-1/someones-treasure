@@ -1,6 +1,7 @@
-# Custom
+# Custom files
 trash/
-vm/
+
+# cx_freeze
 setup.py
 
 # Byte-compiled / optimized / DLL files
