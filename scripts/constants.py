@@ -15,8 +15,8 @@ STATS = {
         "i_frames": 500,
         "knockback_resistance:": 7,
         "range": {
-            "aggression": None,
-            "vision": None
+            "aggression_radius": None,
+            "vision_radius": None
         },
         "speed": 5
     },
@@ -30,8 +30,8 @@ STATS = {
         "i_frames": 500,
         "knockback_resistance:": 7,
         "range": {
-            "aggression": TILE_SIZE * 1,
-            "vision": TILE_SIZE * 10
+            "aggression_radius": TILE_SIZE * 1,
+            "vision_radius": TILE_SIZE * 10
         },
         "speed": 10
     },
@@ -60,8 +60,8 @@ STATS = {
         "i_frames": 500,
         "knockback_resistance:": 7,
         "range": {
-            "aggression": TILE_SIZE * 1,
-            "vision": TILE_SIZE * 4
+            "aggression_radius": TILE_SIZE * 1,
+            "vision_radius": TILE_SIZE * 4
         },
         "speed": 2
     },
@@ -79,5 +79,5 @@ STATS = {
             "vision_radius": TILE_SIZE * 6
         },
         "speed": 7
-    },
+    }
 }
