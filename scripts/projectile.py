@@ -1,5 +1,5 @@
 import pygame as pg
-from scripts.constants import TILE_SIZE
+from scripts.constants import *
 
 
 class Projectile(pg.sprite.Sprite):
@@ -7,19 +7,17 @@ class Projectile(pg.sprite.Sprite):
         super().__init__(groups)
         self.obstacles = obstacles
         self.speed = speed
+        # State
         state = entity_state.split("_")[0]
-        self.__import_graphics(state)
-        self.__play_sfx()
-        self.__placement(entity_rect, state)
-
-    def __import_graphics(self, state):
-        path = f"images/projectile/{state}.png"
-        self.image = pg.image.load(path).convert_alpha()
-
-    def __play_sfx(self):
-        sfx = pg.mixer.Sound("audio/sounds/tissman_gun1.wav")
+        # Image
+        self.image = pg.image.load(f"images/projectile/{state}.png")
+        self.image = self.image.convert_alpha()
+        # Sound
+        sfx = pg.mixer.Sound(SFX["attack"]["player"])
         sfx.set_volume(0.2)
         sfx.play()
+        # Placement
+        self.__placement(entity_rect, state)
 
     def __placement(self, entity_rect, state):
         if state == "left":

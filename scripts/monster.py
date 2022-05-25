@@ -12,9 +12,9 @@ class Monster(Entity):
         self.last_attack = 0
         self.last_hit = 0
         self.damage_player = damage_player
-        self.atk_sfx = pg.mixer.Sound("audio/sounds/jerimee_bright-bounce.wav")
-        self.atk_sfx.set_volume(0.5)
-        self.death_sfx = pg.mixer.Sound("audio/sounds/tissman_gun1.wav")
+        self.attack_sfx = pg.mixer.Sound(SFX["attack"][name])
+        self.attack_sfx.set_volume(0.5)
+        self.death_sfx = pg.mixer.Sound(SFX["death"][name])
         self.death_sfx.set_volume(0.5)
 
     def update(self):
@@ -25,13 +25,13 @@ class Monster(Entity):
         self._reset_timers()
         self.__check_death()
 
-    def custom_update(self, player):
-        self._validate_state(player.rect)
-        self.__take_action(player.rect)
+    def custom_update(self, player_rect):
+        self._validate_state(player_rect)
+        self.__take_action(player_rect)
 
     def __knockback(self):
         if not self.vulnerable:
-            self.direction *= self.knockback_resistance - 10
+            self.direction *= self.knockback_resistance - 64
 
     def _reset_timers(self):
         current_time = pg.time.get_ticks()
@@ -68,7 +68,7 @@ class Monster(Entity):
             self.attacking = True
             self.last_attack = pg.time.get_ticks()
             self.damage_player(self.stats["attack"]["damage"])
-            self.atk_sfx.play()
+            self.attack_sfx.play()
         elif "idle" in self.state:
             self.direction = pg.math.Vector2(0, 0)
         else:

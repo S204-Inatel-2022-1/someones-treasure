@@ -16,7 +16,7 @@ class Player(Entity):
         self.death_sfx = pg.mixer.Sound("audio/sounds/tissman_gun1.wav")
 
     def update(self):
-        self.__knockback()
+        # self.__knockback()
         self.__input()
         self._reset_timers()
         self._validate_state()
@@ -26,7 +26,7 @@ class Player(Entity):
 
     def __knockback(self):
         if not self.vulnerable:
-            self.direction *= self.stats["knockback_resistance"] - 10
+            self.direction *= self.stats["knockback_resistance"] - 64
 
     def __input(self):
         keys = pg.key.get_pressed()
