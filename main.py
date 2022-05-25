@@ -26,7 +26,10 @@ class Game:
                     if event.key == pg.K_ESCAPE:
                         self.close()
                     if event.key == pg.K_RETURN:
-                        self.level.pause()
+                        if not self.level.game_over:
+                            self.level.pause()
+                        else:
+                            self.level.reset()
             self.level.run()
             pg.display.update()
 
