@@ -1,5 +1,4 @@
 import pygame as pg
-
 from scripts.constants import *
 
 
@@ -99,7 +98,10 @@ class GameOverScreen:
         self.display_surface = pg.display.get_surface()
         self.font = pg.font.SysFont("fonts/PixelGameFont.ttf", 64)
         self.text = self.font.render("Game Over", False, "white")
-        self.rect = self.text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+        self.text_rect = self.text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+        self.image = pg.image.load("images/game-over/change_da_world.jpg")
+        self.image_rect = self.image.get_rect(center=(WIDTH // 2, HEIGHT // 2))
 
     def display(self):
-        self.display_surface.blit(self.text, self.rect)
+        self.display_surface.blit(self.image, self.image_rect)
+        self.display_surface.blit(self.text, self.text_rect)

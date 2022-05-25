@@ -17,8 +17,11 @@ class Level:
         self.paused = False
         self.__render_map()
         pg.mixer.init()
-        pg.mixer.music.load("audio/music/evretro_8-bit-brisk-music-loop.wav")
+        pg.mixer.music.load(MUSIC["main_loop"])
         pg.mixer.music.play(-1)
+        self.game_over_music = pg.mixer.Sound(MUSIC["game_over"])
+        self.game_over_music.set_volume(0.5)
+        self.game_over = False
 
     def __render_map(self):
         layouts = {
@@ -81,16 +84,20 @@ class Level:
 
     def run(self):
         if self.player.hp > 0:
+            self.visible_sprites.custom_draw(self.player)
+            self.ui.display(self.player)
             if self.paused:
                 self.ui.display_pause()
             else:
-                self.visible_sprites.custom_draw(self.player)
-                self.ui.display(self.player)
                 self.visible_sprites.update()
                 self.visible_sprites.update_monsters(self.player)
                 # self.attack_logic()
         else:
             self.ui.display_game_over()
+            if not self.game_over:
+                pg.mixer.music.stop()
+                self.game_over_music.play()
+                self.game_over = True
 
     def pause(self):
         if self.paused:
@@ -102,3 +109,6 @@ class Level:
 
     def _damage_player(self, amount):
         self.player.take_damage(amount)
+
+    def reset(self):
+        self.__init__()
