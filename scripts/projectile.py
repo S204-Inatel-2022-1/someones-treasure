@@ -17,7 +17,7 @@ class Projectile(pg.sprite.Sprite):
         self.image = pg.image.load(path).convert_alpha()
 
     def __play_sfx(self):
-        sfx = pg.mixer.Sound("audio/sounds/443710__tissman__gun1.wav")
+        sfx = pg.mixer.Sound("audio/sounds/tissman_gun1.wav")
         sfx.set_volume(0.2)
         sfx.play()
 

@@ -4,14 +4,18 @@ from scripts.constants import *
 
 
 class Monster(Entity):
-    def __init__(self, groups, obstacle_sprites, pos, name):
+    def __init__(self, groups, obstacle_sprites, pos, name, damage_player):
         super().__init__(groups, obstacle_sprites, pos, name)
         self.stats = STATS[name]
         self.hp = self.stats["hp"]
         self.attacking = False
         self.last_attack = 0
-        self.vulnerable = True
         self.last_hit = 0
+        self.damage_player = damage_player
+        self.atk_sfx = pg.mixer.Sound("audio/sounds/jerimee_bright-bounce.wav")
+        self.atk_sfx.set_volume(0.5)
+        self.death_sfx = pg.mixer.Sound("audio/sounds/tissman_gun1.wav")
+        self.death_sfx.set_volume(0.5)
 
     def update(self):
         # self.__knockback()
@@ -46,7 +50,6 @@ class Monster(Entity):
                     self.state = self.state.replace("attack", "idle")
                 else:
                     self.state += "_idle"
-                self.attacking = True
         else:
             if distance <= self.stats["range"]["aggression_radius"]:
                 if not "attack" in self.state:
@@ -61,37 +64,29 @@ class Monster(Entity):
                     self.state = self.state.replace("_attack", "")
 
     def __take_action(self, player_rect):
-        if "attack" in self.state:
-            self.attack_time = pg.time.get_ticks()
-            print("attack")
-            # self.damage_player(self.attack_damage, self.attack_type)
-            # self.attack_sound.play()
+        if "attack" in self.state and not self.attacking:
+            self.attacking = True
+            self.last_attack = pg.time.get_ticks()
+            self.damage_player(self.stats["attack"]["damage"])
+            self.atk_sfx.play()
         elif "idle" in self.state:
             self.direction = pg.math.Vector2(0, 0)
         else:
             self.direction = self._calculate_relative_direction(player_rect)
-            if self.direction.x > 0:
-                self.state = "right"
-            elif self.direction.x < 0:
-                self.state = "left"
+            if abs(self.direction.x) > abs(self.direction.y):
+                if self.direction.x < 0:
+                    self.state = "left"
+                else:
+                    self.state = "right"
+            else:
+                if self.direction.y < 0:
+                    self.state = "up"
+                else:
+                    self.state = "down"
 
     def __check_death(self):
         if self.hp <= 0:
             self.kill()
-            # self.trigger_death_particles(self.rect.center, self.monster_name)
-            # self.add_gold(self.gold)
-            # self.death_sound.play()
 
     def take_damage(self, player, attack_type):
         pass
-        '''
-        if self.vulnerable:
-            self.hit_sound.play()
-            self.direction = self._calculate_relative_direction(player)
-            if attack_type == "weapon":
-                self.health -= player.get_full_weapon_damage()
-            else:
-                self.health -= player.get_full_magic_damage()
-            self.last_hit = pg.time.get_ticks()
-            self.vulnerable = False
-        '''

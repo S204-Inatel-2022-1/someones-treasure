@@ -31,7 +31,7 @@ class Game:
             pg.display.update()
 
     def close(self):
-        print("GAME OVER...\n")
+        print("GAME OVER!\n")
         pg.quit()
         sys.exit()
 

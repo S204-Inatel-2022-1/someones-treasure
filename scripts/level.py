@@ -16,6 +16,9 @@ class Level:
         self.attackable_sprites = pg.sprite.Group()
         self.paused = False
         self.__render_map()
+        pg.mixer.init()
+        pg.mixer.music.load("audio/music/evretro_8-bit-brisk-music-loop.wav")
+        pg.mixer.music.play(-1)
 
     def __render_map(self):
         layouts = {
@@ -63,21 +66,13 @@ class Level:
                                 groups = [self.visible_sprites,
                                           self.attackable_sprites]
                                 obstacles = self.obstacle_sprites
-                                Monster(groups, obstacles, pos, monster_name)
-                                '''
-                                        self.__damage_player,
-                                        self.__trigger_death_particles,
-                                        self.__add_gold)
-                                '''
+                                Monster(groups, obstacles, pos, monster_name,
+                                        self._damage_player)
                             else:
                                 groups = [self.visible_sprites]
                                 obstacles = self.obstacle_sprites
                                 self.player = Player(groups, obstacles, pos)
                                 self.ui = UserInterface(self.player)
-                                '''
-                                                     self.create_attack,
-                                                     self.destroy_attack)
-                                '''
                         elif style == "object":
                             surface = graphics["objects"][int(col)]
                             groups = [self.visible_sprites,
@@ -85,14 +80,17 @@ class Level:
                             Tile(groups, pos, style, surface)
 
     def run(self):
-        if self.paused:
-            self.ui.display_pause()
+        if self.player.hp > 0:
+            if self.paused:
+                self.ui.display_pause()
+            else:
+                self.visible_sprites.custom_draw(self.player)
+                self.ui.display(self.player)
+                self.visible_sprites.update()
+                self.visible_sprites.update_monsters(self.player)
+                # self.attack_logic()
         else:
-            self.visible_sprites.custom_draw(self.player)
-            self.ui.display(self.player)
-            self.visible_sprites.update()
-            self.visible_sprites.update_monsters(self.player)
-            # self.attack_logic()
+            self.ui.display_game_over()
 
     def pause(self):
         if self.paused:
@@ -101,3 +99,6 @@ class Level:
         else:
             pg.mixer.music.pause()
             self.paused = True
+
+    def _damage_player(self, amount):
+        self.player.take_damage(amount)

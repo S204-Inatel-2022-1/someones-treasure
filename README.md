@@ -12,7 +12,11 @@ The code was made entirely in [Python 3](https://www.python.org/) with [Pygame](
 
 Maps were created in [Tiled](https://www.mapeditor.org/), and the sprites were either created with [Aseprite](https://www.aseprite.org/) or downloaded from [OpenGameArt](https://opengameart.org/). See credits in the [`assets/`](assets/) folder.
 
-## Installation
+## Download & Installation
+
+SOON
+
+## Manual Installation
 
 1. Download [Python 3](https://www.python.org/).
 2. Download the project folder (`.zip`) and extract it somewhere.

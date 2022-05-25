@@ -8,6 +8,7 @@ class UserInterface:
         self.hp_bar = HealthBar(player.hp, player.stats["hp"])
         self.ammo_ui = AmmoUI(player.ammo, player.stats["ammo"])
         self.pause_screen = PauseScreen()
+        self.game_over_screen = GameOverScreen()
 
     def display(self, player):
         self.hp_bar.display(player.hp, player.stats["hp"])
@@ -15,6 +16,9 @@ class UserInterface:
 
     def display_pause(self):
         self.pause_screen.display()
+
+    def display_game_over(self):
+        self.game_over_screen.display()
 
 
 class HealthBar:
@@ -84,6 +88,17 @@ class PauseScreen:
         self.display_surface = pg.display.get_surface()
         self.font = pg.font.SysFont("fonts/PixelGameFont.ttf", 36)
         self.text = self.font.render("PAUSED", False, "white")
+        self.rect = self.text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+
+    def display(self):
+        self.display_surface.blit(self.text, self.rect)
+
+
+class GameOverScreen:
+    def __init__(self):
+        self.display_surface = pg.display.get_surface()
+        self.font = pg.font.SysFont("fonts/PixelGameFont.ttf", 64)
+        self.text = self.font.render("Game Over", False, "white")
         self.rect = self.text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
 
     def display(self):

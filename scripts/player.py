@@ -12,11 +12,11 @@ class Player(Entity):
         self.ammo = self.stats["ammo"]
         self.attacking = False
         self.last_attack = 0
-        self.vulnerable = True
         self.last_hit = 0
+        self.death_sfx = pg.mixer.Sound("audio/sounds/tissman_gun1.wav")
 
     def update(self):
-        # self.__knockback()
+        self.__knockback()
         self.__input()
         self._reset_timers()
         self._validate_state()
@@ -26,7 +26,7 @@ class Player(Entity):
 
     def __knockback(self):
         if not self.vulnerable:
-            self._direction *= self.resistance - 10
+            self.direction *= self.stats["knockback_resistance"] - 10
 
     def __input(self):
         keys = pg.key.get_pressed()
@@ -101,7 +101,7 @@ class Player(Entity):
     def __check_death(self):
         if self.hp <= 0:
             self.kill()
-            # do more stuff
+            self.death_sfx.play()
 
     def take_damage(self, amount):
         if self.vulnerable and self.hp > 0:

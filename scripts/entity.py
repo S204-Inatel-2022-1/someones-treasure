@@ -19,6 +19,7 @@ class Entity(pg.sprite.Sprite):
         self.image = self.animations[self.state][0]
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0, 0)
+        self.vulnerable = True
 
     def __import_animations(self, folder_name_path):
         self.animations = {
@@ -31,12 +32,6 @@ class Entity(pg.sprite.Sprite):
             self.animations[animation] = import_folder(path)
         self.frame = 0
         self.animation_speed = 0.15
-
-    '''
-    @abstractclassmethod
-    def _reset_timers(self):
-        pass
-    '''
 
     @abstractclassmethod
     def _validate_state(self):
