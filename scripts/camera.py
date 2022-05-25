@@ -24,4 +24,4 @@ class Camera(pg.sprite.Group):
         monsters = [sprite for sprite in self.sprites()
                     if hasattr(sprite, "custom_update")]
         for monster in monsters:
-            monster.custom_update(player)
+            monster.custom_update(player.rect)
