@@ -29,7 +29,7 @@ class Game:
                         if not self.level.game_over:
                             self.level.pause()
                         else:
-                            self.level.reset()
+                            self.level.restart()
             self.level.run()
             pg.display.update()
 
