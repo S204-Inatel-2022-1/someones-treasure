@@ -55,7 +55,7 @@ class AmmoUI:
         self.ammo = ammo
         self.max_ammo = max_ammo
         self.__import_graphics()
-        self.font = pg.font.SysFont("fonts/PixelGameFont.ttf", 36)
+        self.font = pg.font.Font("fonts/PixelGameFont.ttf", 24)
         self.__update_text()
 
     def __import_graphics(self):
@@ -85,7 +85,7 @@ class AmmoUI:
 class PauseScreen:
     def __init__(self):
         self.display_surface = pg.display.get_surface()
-        self.font = pg.font.SysFont("fonts/PixelGameFont.ttf", 36)
+        self.font = pg.font.Font("fonts/PixelGameFont.ttf", 36)
         self.text = self.font.render("PAUSED", False, "white")
         self.rect = self.text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
 
@@ -96,10 +96,11 @@ class PauseScreen:
 class GameOverScreen:
     def __init__(self):
         self.display_surface = pg.display.get_surface()
-        self.font = pg.font.SysFont("fonts/PixelGameFont.ttf", 64)
-        self.text = self.font.render("Game Over", False, "white")
-        self.text_rect = self.text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
-        self.image = pg.image.load("images/game-over/change_da_world.jpg")
+        self.font = pg.font.Font("fonts/PixelGameFont.ttf", 64)
+        # self.font = pg.font.SysFont("Couriernew", 64, True)
+        self.text = self.font.render("GAME OVER", False, "red")
+        self.text_rect = self.text.get_rect(center=(WIDTH // 2, HEIGHT * 0.75))
+        self.image = pg.image.load("images/game-over/very_sad_rat.png")
         self.image_rect = self.image.get_rect(center=(WIDTH // 2, HEIGHT // 2))
 
     def display(self):

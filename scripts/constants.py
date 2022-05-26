@@ -6,7 +6,7 @@ TILE_SIZE = 64
 # Entities
 STATS = {
     "player": {
-        "ammo": 999,
+        "ammo": 16,
         "attack": {
             "cooldown": 500,
             "damage": 1
@@ -75,7 +75,7 @@ STATS = {
         "i_frames": 500,
         "knockback_resistance": 7,
         "range": {
-            "aggression_radius": TILE_SIZE * 1,
+            "aggression_radius": TILE_SIZE // 2,
             "vision_radius": TILE_SIZE * 6
         },
         "speed": 3

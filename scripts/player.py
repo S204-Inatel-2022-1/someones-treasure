@@ -5,7 +5,7 @@ from scripts.projectile import Projectile
 
 
 class Player(Entity):
-    def __init__(self, groups, obstacles, pos):
+    def __init__(self, groups, obstacles, pos, create_projectile):
         super().__init__(groups, obstacles, pos, "player")
         self.stats = STATS["player"]
         self.hp = self.stats["hp"]
@@ -13,7 +13,8 @@ class Player(Entity):
         self.attacking = False
         self.last_attack = 0
         self.last_hit = 0
-        self.death_sfx = pg.mixer.Sound("audio/sounds/tissman_gun1.wav")
+        self.death_sfx = pg.mixer.Sound(SFX["death"]["player"])
+        self.create_projectile = create_projectile
 
     def update(self):
         # self.__knockback()
@@ -71,7 +72,7 @@ class Player(Entity):
 
     def __shot(self):
         self.ammo -= 1
-        Projectile(self.groups(), self.obstacles, self.state, self.rect)
+        self.create_projectile()
 
     def _reset_timers(self):
         current_time = pg.time.get_ticks()

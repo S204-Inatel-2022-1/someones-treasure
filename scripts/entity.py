@@ -18,7 +18,7 @@ class Entity(pg.sprite.Sprite):
         self.state = "down"
         self.image = self.animations[self.state][0]
         self.rect = self.image.get_rect(topleft=pos)
-        self.hitbox = self.rect.inflate(0, 0)
+        self.hitbox = self.rect.inflate(TILE_SIZE // 4, 0)
         self.vulnerable = True
 
     def __import_animations(self, folder_name_path):

@@ -25,14 +25,14 @@ class Level:
 
     def __render_map(self):
         layouts = {
-            "boundary": import_layout(f"data/map_Boundaries.csv"),
+            "hole": import_layout(f"data/map_Holes.csv"),
             # "breakable": import_layout(f"data/map_Breakable.csv"),
             "entity": import_layout(f"data/map_Entities.csv"),
-            "object": import_layout(f"data/map_Objects.csv")
+            "wall": import_layout(f"data/map_Walls.csv")
         }
         graphics = {
             # "breakable": import_folder("assets/images/breakable"),
-            "objects": import_folder("images/objects")
+            "tileset": import_folder("images/tileset")
         }
         for style, layout in layouts.items():
             for i, row in enumerate(layout):
@@ -41,20 +41,17 @@ class Level:
                         x = j * TILE_SIZE
                         y = i * TILE_SIZE
                         pos = x, y
-                        if style == "boundary":
+                        if style == "hole":
                             groups = [self.obstacle_sprites]
                             Tile(groups, pos, style)
-                        elif style == "breakable":
-                            '''
+                        if style == "breakable" and False:
                             random_stuff = choice(graphics["breakable"])
                             groups = [self.visible_sprites,
                                       self.obstacle_sprites,
                                       self.__attackable_sprites]
                             Tile(groups, pos, style, random_stuff)
-                            '''
-                            pass
-                        elif style == "entity":
-                            if col != "65":
+                        if style == "entity":
+                            if col != "0":
                                 monster_name = "rat"
                                 """
                                 if col == "66":
@@ -74,10 +71,11 @@ class Level:
                             else:
                                 groups = [self.visible_sprites]
                                 obstacles = self.obstacle_sprites
-                                self.player = Player(groups, obstacles, pos)
+                                self.player = Player(groups, obstacles, pos,
+                                                     self._create_projectile)
                                 self.ui = UserInterface(self.player)
-                        elif style == "object":
-                            surface = graphics["objects"][int(col)]
+                        if style == "wall":
+                            surface = graphics["tileset"][int(col)]
                             groups = [self.visible_sprites,
                                       self.obstacle_sprites]
                             Tile(groups, pos, style, surface)
@@ -112,3 +110,6 @@ class Level:
 
     def reset(self):
         self.__init__()
+
+    def _create_projectile(self):
+        pass

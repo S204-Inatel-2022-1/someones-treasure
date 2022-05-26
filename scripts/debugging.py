@@ -1,4 +1,5 @@
 import pygame as pg
+from pprint import pprint as pp
 
 
 def display_info(info):

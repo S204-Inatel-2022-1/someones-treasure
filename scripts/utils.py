@@ -1,10 +1,10 @@
-from csv import reader
-from PIL import Image
 import numpy as np
 import pygame as pg
 import os
-
-from scripts.constants import TILE_SIZE
+from csv import reader
+from PIL import Image
+# from scripts.constants import TILE_SIZE
+TILE_SIZE = 64
 
 
 def clear_screen():
@@ -43,5 +43,8 @@ def crop_tileset():
             array = np.copy(image_array)
             array = array[row:row + TILE_SIZE, col:col + TILE_SIZE]
             cropped_image = Image.fromarray(array)
-            cropped_image.save(f"images/objects/{count}.png")
+            cropped_image.save(f"images/tileset/{count}.png")
             count += 1
+
+
+crop_tileset()
