@@ -27,7 +27,7 @@ class Level:
         pg.mixer.music.set_volume(0.2)
         pg.mixer.music.play(-1)
         self.game_over_music = pg.mixer.Sound(MUSIC["game_over"])
-        self.game_over_music.set_volume(0.2)
+        self.game_over_music.set_volume(0.5)
         self.game_over = False
         self.death_time = 0
         self.game_over_time = 0

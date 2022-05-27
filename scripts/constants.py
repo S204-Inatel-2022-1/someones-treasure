@@ -13,7 +13,7 @@ STATS = {
             "type": "ranged"
         },
         "hp": 6,
-        "i_frames": 500,
+        "i_frames": 1000,
         "knockback_resistance": 7,
         "range": {
             "aggression_radius": None,
@@ -28,8 +28,8 @@ STATS = {
             "damage": 2,
             "type": "melee"
         },
-        "hp": 2,
-        "i_frames": 500,
+        "hp": 1,
+        "i_frames": 1000,
         "knockback_resistance": 7,
         "range": {
             "aggression_radius": TILE_SIZE * 1,
@@ -41,11 +41,11 @@ STATS = {
         "ammo": None,
         "attack": {
             "cooldown": 1000,
-            "damage": 3,
+            "damage": 2,
             "type": "ranged"
         },
-        "hp": 4,
-        "i_frames": 500,
+        "hp": 3,
+        "i_frames": 1000,
         "knockback_resistance": 7,
         "range": {
             "aggression_radius": TILE_SIZE * 4,
@@ -56,12 +56,12 @@ STATS = {
     "slime": {
         "ammo": None,
         "attack": {
-            "cooldown": 500,
+            "cooldown": 1500,
             "damage": 1,
             "type": "melee"
         },
-        "hp": 6,
-        "i_frames": 500,
+        "hp": 2,
+        "i_frames": 1000,
         "knockback_resistance": 7,
         "range": {
             "aggression_radius": TILE_SIZE * 1,
@@ -73,11 +73,11 @@ STATS = {
         "ammo": None,
         "attack": {
             "cooldown": 1000,
-            "damage": 3,
+            "damage": 2,
             "type": "ranged"
         },
-        "hp": 4,
-        "i_frames": 500,
+        "hp": 3,
+        "i_frames": 1000,
         "knockback_resistance": 7,
         "range": {
             "aggression_radius": TILE_SIZE * 4,
