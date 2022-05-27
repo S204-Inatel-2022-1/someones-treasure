@@ -1,5 +1,6 @@
 # Custom files
 trash/
+test.py
 
 # cx_freeze
 setup.py
