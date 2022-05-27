@@ -20,12 +20,12 @@ class Level:
         self.all_obstacle_sprites = pg.sprite.Group()
         self.projectile_sprites = pg.sprite.Group()
         self.attackable_sprites = pg.sprite.Group()
-        self.paused = False
         self.__render_map()
         pg.mixer.init()
         pg.mixer.music.load(MUSIC["main_loop"])
         pg.mixer.music.set_volume(0.2)
         pg.mixer.music.play(-1)
+        self.paused = False
         self.game_over_music = pg.mixer.Sound(MUSIC["game_over"])
         self.game_over_music.set_volume(0.5)
         self.game_over = False
@@ -64,26 +64,31 @@ class Level:
                             Tile(groups, pos, style, random_stuff)
                         if style == "entity":
                             if col != "0":
-                                groups = [self.visible_sprites,
-                                          self.attackable_sprites]
-                                obstacles = self.all_obstacle_sprites
                                 if col == "1":
                                     monster_name = "slime"
-                                    shot_projectile = None
+                                    groups = [self.visible_sprites,
+                                              self.attackable_sprites]
+                                    obstacles = self.all_obstacle_sprites
+                                    Monster(groups, obstacles, pos, monster_name,
+                                            self.__damage_player,
+                                            self.__recover_ammo)
                                 elif col == "2":
                                     monster_name = "rat"  # "skeleton"
-                                    shot_projectile = self.__shot_projectile
+                                    groups = [self.visible_sprites,
+                                              self.attackable_sprites]
+                                    obstacles = self.all_obstacle_sprites
+                                    Monster(groups, obstacles, pos, monster_name,
+                                            self.__damage_player,
+                                            self.__recover_ammo,
+                                            self.__shot_projectile)
                                 elif col == "3":
                                     monster_name = "ghost"
-                                    shot_projectile = None
+                                    groups = [self.visible_sprites,
+                                              self.attackable_sprites]
                                     obstacles = None
-                                else:
-                                    monster_name = "rat"
-                                    shot_projectile = self.__shot_projectile
-                                Monster(groups, obstacles, pos, monster_name,
-                                        self.__damage_player,
-                                        self.__add_ammo,
-                                        shot_projectile)
+                                    Monster(groups, obstacles, pos, monster_name,
+                                            self.__damage_player,
+                                            self.__recover_ammo)
                             else:
                                 groups = [self.visible_sprites]
                                 obstacles = self.all_obstacle_sprites
@@ -108,15 +113,29 @@ class Level:
                 self.visible_sprites.update_monsters(self.player)
                 self.__attack_logic()
         else:
-            self.ui.display_game_over()
             if not self.game_over:
                 pg.mixer.music.stop()
                 self.game_over_music.play()
                 self.game_over = True
                 self.game_over_time = pg.time.get_ticks()
+            self.ui.display_game_over()
             current_time = pg.time.get_ticks()
             if current_time - self.game_over_time >= 3000:
                 self.can_continue = True
+
+    def __attack_logic(self):
+        for projectile in self.projectile_sprites:
+            if projectile.targets_player:
+                if self.player.rect.colliderect(projectile.hitbox):
+                    projectile.kill()
+                    self.__damage_player(projectile.damage)
+            for sprite in self.attackable_sprites:
+                if sprite.rect.colliderect(projectile.hitbox):
+                    if sprite.style == "monster":
+                        sprite.take_damage(projectile.damage)
+                    elif sprite.style == "breakable":
+                        sprite.kill()
+                    projectile.kill()
 
     def pause(self):
         if self.paused:
@@ -130,9 +149,6 @@ class Level:
         if self.can_continue:
             self.__init__()
 
-    def __damage_player(self, amount):
-        self.player.take_damage(amount)
-
     def __shot_projectile(self, entity_state, entity_rect, damage, targets_player=False):
         groups = [self.visible_sprites, self.projectile_sprites]
         obstacles = pg.sprite.Group()
@@ -144,20 +160,8 @@ class Level:
         Projectile(groups, obstacles, entity_state, entity_rect,
                    damage, 3, targets_player)
 
-    def __attack_logic(self):
-        for projectile in self.projectile_sprites:
-            if projectile.targets_player:
-                if self.player.rect.colliderect(projectile.hitbox):
-                    projectile.kill()
-                    self.__damage_player(projectile.damage)
-            else:
-                for sprite in self.attackable_sprites:
-                    if sprite.rect.colliderect(projectile.hitbox):
-                        if sprite.style == "monster":
-                            sprite.take_damage(projectile.damage)
-                        elif sprite.style == "breakable":
-                            sprite.kill()
-                        projectile.kill()
+    def __damage_player(self, amount=1):
+        self.player.take_damage(amount)
 
-    def __add_ammo(self, amount=randint(1, 6)):
-        self.player.add_ammo(amount)
+    def __recover_ammo(self, amount=randint(1, 6)):
+        self.player.collect_ammo(amount)

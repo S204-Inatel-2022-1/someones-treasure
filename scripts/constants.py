@@ -3,7 +3,7 @@ FPS = 60
 RESOLUTION = WIDTH, HEIGHT = 1280, 720
 TILE_SIZE = 64
 
-# Entities
+# Entity Stats
 STATS = {
     "player": {
         "ammo": 16,
@@ -87,11 +87,13 @@ STATS = {
     }
 }
 
+# Music
 MUSIC = {
     "game_over": "audio/music/evretro_8-bit-game-over-sound-tune.wav",
     "main_loop": "audio/music/evretro_8-bit-brisk-music-loop.wav"
 }
 
+# Sound Effects
 SFX = {
     "attack": {
         "player": "audio/sounds/tissman_gun1.wav",

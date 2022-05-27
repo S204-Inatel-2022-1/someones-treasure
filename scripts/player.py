@@ -126,7 +126,7 @@ class Player(Entity):
             self.vulnerable = False
             self.last_hit = pg.time.get_ticks()
 
-    def add_ammo(self, amount):
+    def collect_ammo(self, amount):
         if self.ammo + amount <= self.stats["ammo"]:
             self.ammo += amount
         else:
