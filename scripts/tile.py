@@ -1,5 +1,5 @@
 import pygame as pg
-from scripts.constants import TILE_SIZE
+from scripts.constants import *
 
 
 class Tile(pg.sprite.Sprite):
@@ -9,4 +9,12 @@ class Tile(pg.sprite.Sprite):
         self.image = surface
         self.rect = self.image.get_rect(topleft=pos)
         x_offset = y_offset = - TILE_SIZE // 4
-        self.hitbox = self.rect.inflate(x_offset, y_offset)
+        if style != "hole":
+            self.hitbox = self.rect.inflate(x_offset, y_offset)
+        else:
+            self.hitbox = self.rect.inflate(0, 0)
+
+    def break_tile(self):
+        if self.style == "breakable":
+            self.kill()
+            sfx = pg.mixer.Sound(SFX["misc"]["break"])

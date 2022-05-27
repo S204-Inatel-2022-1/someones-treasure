@@ -3,10 +3,12 @@ from scripts.constants import *
 
 
 class Projectile(pg.sprite.Sprite):
-    def __init__(self, groups, obstacles, entity_state, entity_rect, speed=3):
+    def __init__(self, groups, obstacles, entity_state, entity_rect, damage, speed, targets_player):
         super().__init__(groups)
         self.obstacles = obstacles
+        self.damage = damage
         self.speed = speed
+        self.targets_player = targets_player
         # State
         state = entity_state.split("_")[0]
         # Image
@@ -56,3 +58,12 @@ class Projectile(pg.sprite.Sprite):
         for sprite in self.obstacles:
             if sprite.hitbox.colliderect(self.hitbox):
                 self.kill()
+        '''
+        for sprite in self.attackable:
+            if sprite.hitbox.colliderect(self.hitbox):
+                if sprite.style == "monster":
+                    sprite.take_damage(self.damage)
+                if sprite.style == "breakable":
+                    sprite.break_tile()
+                self.kill()
+        '''

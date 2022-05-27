@@ -18,7 +18,7 @@ class Entity(pg.sprite.Sprite):
         self.state = "down"
         self.image = self.animations[self.state][0]
         self.rect = self.image.get_rect(topleft=pos)
-        self.hitbox = self.rect.inflate(TILE_SIZE // 4, 0)
+        self.hitbox = self.rect.inflate(0, - TILE_SIZE // 4)
         self.vulnerable = True
 
     def __import_animations(self, folder_name_path):
@@ -47,19 +47,20 @@ class Entity(pg.sprite.Sprite):
         self.rect.center = self.hitbox.center
 
     def __handle_collisions(self, axis):
-        for sprite in self.obstacles:
-            if axis == "x":
-                if sprite.hitbox.colliderect(self.hitbox):
-                    if self.direction.x > 0:
-                        self.hitbox.right = sprite.hitbox.left
-                    if self.direction.x < 0:
-                        self.hitbox.left = sprite.hitbox.right
-            if axis == "y":
-                if sprite.hitbox.colliderect(self.hitbox):
-                    if self.direction.y > 0:
-                        self.hitbox.bottom = sprite.hitbox.top
-                    if self.direction.y < 0:
-                        self.hitbox.top = sprite.hitbox.bottom
+        if self.obstacles != None:
+            for sprite in self.obstacles:
+                if axis == "x":
+                    if sprite.hitbox.colliderect(self.hitbox):
+                        if self.direction.x > 0:
+                            self.hitbox.right = sprite.hitbox.left
+                        if self.direction.x < 0:
+                            self.hitbox.left = sprite.hitbox.right
+                if axis == "y":
+                    if sprite.hitbox.colliderect(self.hitbox):
+                        if self.direction.y > 0:
+                            self.hitbox.bottom = sprite.hitbox.top
+                        if self.direction.y < 0:
+                            self.hitbox.top = sprite.hitbox.bottom
 
     def _animate(self):
         animation = self.animations[self.state]

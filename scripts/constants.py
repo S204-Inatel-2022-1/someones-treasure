@@ -1,6 +1,6 @@
 # Settings
 FPS = 60
-RESOLUTION = WIDTH, HEIGHT = 960, 540
+RESOLUTION = WIDTH, HEIGHT = 1280, 720
 TILE_SIZE = 64
 
 # Entities
@@ -9,7 +9,8 @@ STATS = {
         "ammo": 16,
         "attack": {
             "cooldown": 500,
-            "damage": 1
+            "damage": 1,
+            "type": "ranged"
         },
         "hp": 6,
         "i_frames": 500,
@@ -23,38 +24,41 @@ STATS = {
     "ghost": {
         "ammo": None,
         "attack": {
-            "cooldown": 1000,
-            "damage": 2
+            "cooldown": 2000,
+            "damage": 2,
+            "type": "melee"
         },
         "hp": 2,
         "i_frames": 500,
         "knockback_resistance": 7,
         "range": {
             "aggression_radius": TILE_SIZE * 1,
-            "vision_radius": TILE_SIZE * 10
+            "vision_radius": TILE_SIZE * 6
         },
-        "speed": 10
+        "speed": 3
     },
     "skeleton": {
         "ammo": None,
         "attack": {
             "cooldown": 1000,
-            "damage": 3
+            "damage": 3,
+            "type": "ranged"
         },
         "hp": 4,
         "i_frames": 500,
         "knockback_resistance": 7,
         "range": {
-            "aggression_radius": TILE_SIZE * 1,
+            "aggression_radius": TILE_SIZE * 4,
             "vision_radius": TILE_SIZE * 6
         },
-        "speed": 7
+        "speed": 4
     },
     "slime": {
         "ammo": None,
         "attack": {
             "cooldown": 500,
-            "damage": 1
+            "damage": 1,
+            "type": "melee"
         },
         "hp": 6,
         "i_frames": 500,
@@ -69,16 +73,17 @@ STATS = {
         "ammo": None,
         "attack": {
             "cooldown": 1000,
-            "damage": 3
+            "damage": 3,
+            "type": "ranged"
         },
         "hp": 4,
         "i_frames": 500,
         "knockback_resistance": 7,
         "range": {
-            "aggression_radius": TILE_SIZE // 2,
+            "aggression_radius": TILE_SIZE * 4,
             "vision_radius": TILE_SIZE * 6
         },
-        "speed": 3
+        "speed": 4
     }
 }
 
@@ -91,13 +96,18 @@ SFX = {
     "attack": {
         "player": "audio/sounds/tissman_gun1.wav",
         "rat": "audio/sounds/tissman_gun1.wav",
+        "ghost": "audio/sounds/japanyoshithegamer_8-bit-hi-hat-soft.wav",
         "skeleton": "audio/sounds/japanyoshithegamer_8-bit-hi-hat-soft.wav",
         "slime": "audio/sounds/jeckkech_collision.wav"
     },
     "death": {
         "player": "audio/sounds/mentoslat_8-bit-death-sound.wav",
         "rat": "audio/sounds/mentoslat_8-bit-death-sound.wav",
+        "ghost": "audio/sounds/mentoslat_8-bit-death-sound.wav",
         "skeleton": "audio/sounds/mentoslat_8-bit-death-sound.wav",
         "slime": "audio/sounds/mentoslat_8-bit-death-sound.wav"
+    },
+    "misc": {
+        "break": "audio/sounds/japanyoshithegamer_8-bit-hi-hat-soft.wav"
     }
 }
