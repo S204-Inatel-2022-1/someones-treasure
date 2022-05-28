@@ -1,28 +1,18 @@
-# Someone's Treasure 🐀
+# Someone's Treasure 🐀🧀
 
 ## Introduction
 
-This is an orthogonal game made entirely in Python using Pygame. It was inspired by games like The Legend of Zelda and Titan Souls.
+This is an orthogonal game made entirely in Python using Pygame. It was inspired by several games, like **The Legend of Zelda**, **Titan Souls**, **Binding of Isaac**, _etc_.
 
-My idea is to make a labyrinth game with a few levels, a basic crafting system, a few enemies and a boss.
+My idea is to make a maze game with a few levels, a basic collecting system, a few puzzles, some enemies and a boss battle.
 
 ## Technologies
 
-The code was made entirely in [Python 3](https://www.python.org/) with [Pygame](https://www.pygame.org/). I also used [numpy](https://numpy.org/) for some lesser functionalities.
+The code was made entirely in [Python 3](https://www.python.org/) with [Pygame](https://www.pygame.org/). I also used [numpy](https://numpy.org/) and [Pillow](https://pillow.readthedocs.io/en/stable/) for some lesser functionalities.
 
-Maps were created in [Tiled](https://www.mapeditor.org/), and the sprites were either created with [Aseprite](https://www.aseprite.org/) or downloaded from [OpenGameArt](https://opengameart.org/). See credits in the [`assets/`](assets/) folder.
+Maps were created in [Tiled](https://www.mapeditor.org/), and the sprites were either created with [Aseprite](https://www.aseprite.org/) or downloaded from [OpenGameArt](https://opengameart.org/), in the case of the [dungeon tileset](https://opengameart.org/content/dungeon-tileset-4) used.
 
-## Download & Installation
-
-SOON
-
-## Manual Installation
-
-1. Download [Python 3](https://www.python.org/).
-2. Download the project folder (`.zip`) and extract it somewhere.
-3. In the console, open the game directory and type `python -m pip install -r requirements.txt`, then press ENTER;
-4. Still at the console, type `python main.py` and press ENTER once again;
-5. Have fun!
+Music and sound effects were all downloaded from [freesound](https://freesound.org/) under a Creative Commons 0 license.
 
 ## Documentation
 
@@ -36,6 +26,6 @@ Special thanks to [Clear Code](https://www.youtube.com/channel/UCznj32AM2r98hZfT
 - [The ultimate introduction to Pygame](https://www.youtube.com/watch?v=AY9MnQ4x3zk)
 - [Creating a Mario style level in Python / Pygame with a visual level editor [Tiled]](https://www.youtube.com/watch?v=wJMDh9QGRgs).
 
-Also thanks to [Rabbid76](https://github.com/Rabbid76) for its [PyGameExamplesAndAnswers](https://github.com/Rabbid76/PyGameExamplesAndAnswers) repository. It helped me alot.
+Also thanks to [Rabbid76](https://github.com/Rabbid76) for its [PyGameExamplesAndAnswers](https://github.com/Rabbid76/PyGameExamplesAndAnswers) repository. It definetely helped me alot.
 
-Please also check [`assets/`](assets/) for more credits.
+Last but not least, thanks to my bf for helping me with sprites. 💙
