@@ -1,6 +1,5 @@
 import pygame as pg
 from random import choice, randint
-from threading import Event
 from scripts.camera import Camera
 from scripts.constants import *
 from scripts.monster import Monster
@@ -27,7 +26,7 @@ class Level:
         pg.mixer.music.play(-1)
         self.paused = False
         self.game_over_music = pg.mixer.Sound(MUSIC["game_over"])
-        self.game_over_music.set_volume(0.5)
+        self.game_over_music.set_volume(0.3)
         self.game_over = False
         self.death_time = 0
         self.game_over_time = 0

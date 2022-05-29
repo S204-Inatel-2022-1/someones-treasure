@@ -9,10 +9,7 @@ class Tile(pg.sprite.Sprite):
         self.image = surface
         self.rect = self.image.get_rect(topleft=pos)
         x_offset = y_offset = - TILE_SIZE // 4
-        if style != "hole":
-            self.hitbox = self.rect.inflate(x_offset, y_offset)
-        else:
-            self.hitbox = self.rect.inflate(0, 0)
+        self.hitbox = self.rect.inflate(x_offset, y_offset)
 
     def break_tile(self):
         if self.style == "breakable":
