@@ -1,8 +1,8 @@
 import pygame as pg
 from abc import abstractclassmethod
 from math import sin
-from scripts.constants import *
-from scripts.utils import import_folder
+from source.constants.settings import *
+from source.logic.utils import import_folder
 
 
 class Entity(pg.sprite.Sprite):
@@ -20,6 +20,7 @@ class Entity(pg.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0, - TILE_SIZE // 4)
         self.vulnerable = True
+        self.animated = True
 
     def __import_animations(self, folder_name_path):
         self.animations = {
@@ -63,19 +64,20 @@ class Entity(pg.sprite.Sprite):
                             self.hitbox.top = sprite.hitbox.bottom
 
     def _animate(self):
-        animation = self.animations[self.state]
-        self.frame += self.animation_speed
-        if self.frame >= len(animation):
-            if "attack" in self.state:
-                self._can_attack = False
-            self.frame = 0
-        self.image = animation[int(self.frame)]
-        self.rect = self.image.get_rect(center=self.hitbox.center)
-        if not self.vulnerable:
-            alpha = self.__calculate_wave_value()
-            self.image.set_alpha(alpha)
-        else:
-            self.image.set_alpha(255)
+        if self.animated:
+            animation = self.animations[self.state]
+            self.frame += self.animation_speed
+            if self.frame >= len(animation):
+                if "attack" in self.state:
+                    self._can_attack = False
+                self.frame = 0
+            self.image = animation[int(self.frame)]
+            self.rect = self.image.get_rect(center=self.hitbox.center)
+            if not self.vulnerable:
+                alpha = self.__calculate_wave_value()
+                self.image.set_alpha(alpha)
+            else:
+                self.image.set_alpha(255)
 
     def __calculate_wave_value(self):
         value = sin(pg.time.get_ticks())
@@ -100,3 +102,6 @@ class Entity(pg.sprite.Sprite):
         else:
             direction = pg.math.Vector2(0, 0)
         return direction
+
+    def toggle_animations(self, value):
+        self.animated = value

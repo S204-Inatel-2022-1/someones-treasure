@@ -3,10 +3,10 @@ import pygame as pg
 import os
 from csv import reader
 from PIL import Image
-from scripts.constants import TILE_SIZE
+from source.constants.settings import TILE_SIZE
 
 
-def clear_screen():
+def clear_console():
     os.system("cls" if os.name == "nt" else "clear")
 
 

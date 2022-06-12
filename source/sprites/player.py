@@ -1,7 +1,8 @@
 import pygame as pg
-from scripts.constants import *
-from scripts.entity import Entity
-from scripts.projectile import Projectile
+from source.constants.paths import *
+from source.constants.stats import *
+from source.sprites.entity import Entity
+from source.sprites.projectile import Projectile
 
 
 class Player(Entity):
@@ -31,9 +32,9 @@ class Player(Entity):
             self.direction *= self.stats["knockback_resistance"] - 64
 
     def __input(self):
-        keys = pg.key.get_pressed()
-        self.__movement_input(keys)
         if not self.attacking:
+            keys = pg.key.get_pressed()
+            self.__movement_input(keys)
             self.__attack_input(keys)
 
     def __movement_input(self, keys):
@@ -74,6 +75,7 @@ class Player(Entity):
             if self.ammo > 0:
                 self.attacking = True
                 self.last_attack = pg.time.get_ticks()
+                self.animation_speed *= 2
                 self.__shot()
             else:
                 '''
@@ -94,6 +96,7 @@ class Player(Entity):
         if self.attacking:
             if current_time - self.last_attack >= self.stats["attack"]["cooldown"]:
                 self.attacking = False
+                self.animation_speed /= 2
                 # self.__finish_attack()
         if not self.vulnerable:
             if current_time - self.last_hit >= self.stats["i_frames"]:
@@ -104,12 +107,12 @@ class Player(Entity):
             if not "idle" in self.state and not "attack" in self.state:
                 self.state += "_idle"
         if self.attacking:
-            if self.direction.x == 0 and self.direction.y == 0:
-                if not "attack" in self.state:
-                    if "idle" in self.state:
-                        self.state = self.state.replace("_idle", "_attack")
-                    else:
-                        self.state += "_attack"
+            self.direction = pg.Vector2(0, 0)
+            if not "attack" in self.state:
+                if "idle" in self.state:
+                    self.state = self.state.replace("_idle", "_attack")
+                else:
+                    self.state += "_attack"
         else:
             if "attack" in self.state:
                 self.state = self.state.replace("_attack", "")
@@ -131,3 +134,7 @@ class Player(Entity):
             self.ammo += amount
         else:
             self.ammo = self.stats["ammo"]
+
+    def __shot_projectile(self):
+        Projectile(self.groups(), self.obstacles,
+                   self.targets, self.state, self.rect)

@@ -1,10 +1,12 @@
 import pygame as pg
-from scripts.entity import Entity
-from scripts.constants import *
+from source.constants.paths import *
+from source.constants.stats import *
+from source.sprites.entity import Entity
+from source.sprites.projectile import Projectile
 
 
 class Monster(Entity):
-    def __init__(self, groups, obstacle_sprites, pos, name, damage_player, drop_ammo, shot_projectile=None):
+    def __init__(self, groups, obstacle_sprites, pos, name, damage_player, shot_projectile=None):
         super().__init__(groups, obstacle_sprites, pos, name)
         self.stats = STATS[name]
         self.hp = self.stats["hp"]
@@ -12,7 +14,7 @@ class Monster(Entity):
         self.last_attack = 0
         self.last_hit = 0
         self.damage_player = damage_player
-        self.drop_ammo = drop_ammo
+        # self.drop_ammo = drop_ammo
         self.shot_projectile = shot_projectile
         self.attack_sfx = pg.mixer.Sound(SFX["attack"][name])
         self.attack_sfx.set_volume(0.5)
@@ -73,13 +75,15 @@ class Monster(Entity):
                     self.attacking = True
                     self.last_attack = pg.time.get_ticks()
                     self.attack_sfx.play()
-                    self.shot_projectile(self.state, self.rect,
-                                         self.stats["attack"]["damage"], True)
+                    self.shot_projectile(self.state, self.rect, self.stats["attack"]["damage"],
+                                         can_hit_player=True)
             else:
                 self.attacking = True
+                self.direction = pg.math.Vector2(0, 0)
                 self.last_attack = pg.time.get_ticks()
                 self.damage_player(self.stats["attack"]["damage"])
                 self.attack_sfx.play()
+            self.direction = pg.math.Vector2(0, 0)
         elif "idle" in self.state:
             self.direction = pg.math.Vector2(0, 0)
         else:
@@ -99,7 +103,7 @@ class Monster(Entity):
         if self.hp <= 0:
             self.kill()
             self.death_sfx.play()
-            self.drop_ammo()
+            # self.drop_ammo()
 
     def take_damage(self, amount):
         if self.vulnerable and self.hp > 0:

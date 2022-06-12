@@ -1,14 +1,14 @@
 import pygame as pg
 import sys
-from scripts.constants import *
-from scripts.level import Level
-from scripts.utils import clear_screen
+from source.constants.settings import *
+from source.logic.level import Level
+from source.logic.utils import clear_console
 
 
 class Game:
     def __init__(self):
         pg.init()
-        self.screen = pg.display.set_mode(RESOLUTION)
+        self.screen = pg.display.set_mode(RESOLUTION, pg.RESIZABLE)
         pg.display.set_caption("Someone's Treasure")
         icon = pg.image.load("images/icons/game-icon.png").convert_alpha()
         pg.display.set_icon(icon)
@@ -40,6 +40,6 @@ class Game:
 
 
 if __name__ == "__main__":
-    clear_screen()
+    clear_console()
     game = Game()
     game.play()

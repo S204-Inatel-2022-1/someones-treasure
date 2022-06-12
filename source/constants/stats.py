@@ -1,14 +1,10 @@
-# Settings
-FPS = 60
-RESOLUTION = WIDTH, HEIGHT = 1280, 720
-TILE_SIZE = 64
+from source.constants.settings import TILE_SIZE
 
-# Entity Stats
 STATS = {
     "player": {
         "ammo": 16,
         "attack": {
-            "cooldown": 500,
+            "cooldown": 750,
             "damage": 1,
             "type": "ranged"
         },
@@ -72,7 +68,7 @@ STATS = {
     "rat": {
         "ammo": None,
         "attack": {
-            "cooldown": 1000,
+            "cooldown": 1500,
             "damage": 2,
             "type": "ranged"
         },
@@ -84,32 +80,5 @@ STATS = {
             "vision_radius": TILE_SIZE * 6
         },
         "speed": 4
-    }
-}
-
-# Music
-MUSIC = {
-    "game_over": "audio/music/evretro_8-bit-game-over-sound-tune.wav",
-    "main_loop": "audio/music/evretro_8-bit-brisk-music-loop.wav"
-}
-
-# Sound Effects
-SFX = {
-    "attack": {
-        "player": "audio/sounds/tissman_gun1.wav",
-        "rat": "audio/sounds/tissman_gun1.wav",
-        "ghost": "audio/sounds/japanyoshithegamer_8-bit-hi-hat-soft.wav",
-        "skeleton": "audio/sounds/japanyoshithegamer_8-bit-hi-hat-soft.wav",
-        "slime": "audio/sounds/jeckkech_collision.wav"
-    },
-    "death": {
-        "player": "audio/sounds/mentoslat_8-bit-death-sound.wav",
-        "rat": "audio/sounds/mentoslat_8-bit-death-sound.wav",
-        "ghost": "audio/sounds/mentoslat_8-bit-death-sound.wav",
-        "skeleton": "audio/sounds/mentoslat_8-bit-death-sound.wav",
-        "slime": "audio/sounds/mentoslat_8-bit-death-sound.wav"
-    },
-    "misc": {
-        "break": "audio/sounds/japanyoshithegamer_8-bit-hi-hat-soft.wav"
     }
 }
