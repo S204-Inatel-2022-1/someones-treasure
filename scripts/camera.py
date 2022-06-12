@@ -7,7 +7,7 @@ class Camera(pg.sprite.Group):
         self.display_surface = pg.display.get_surface()
         self.half_width = self.display_surface.get_width() // 2
         self.half_height = self.display_surface.get_height() // 2
-        self.offset = pg.math.Vector2()
+        self.offset = pg.math.Vector2(0, 0)
         self.ground_surf = pg.image.load("images/tile/map.png").convert()
         self.ground_rect = self.ground_surf.get_rect(topleft=(0, 0))
 
