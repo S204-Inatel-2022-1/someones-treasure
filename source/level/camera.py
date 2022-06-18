@@ -3,13 +3,13 @@ Contains the Camera class.
 '''
 import pygame as pg
 
-from source.utils.calcs import calculate_half_dimensions, calculate_screen_vector
-from source.utils.calcs import calculate_relative_vector
+from source.constants.settings import TILE_SIZE
+from source.utils.calcs import half_dimensions, rel_vector
 
 
 class Camera(pg.sprite.Group):
     '''
-    This class is used to display the level according to the player's position.
+    This class is used to display stuff according to the player's position.
     '''
 
     def __init__(self):
@@ -21,9 +21,9 @@ class Camera(pg.sprite.Group):
 
     def custom_draw(self, player):
         '''
-        Draws everything according to player position.
+        Displays everything according to the player's position
         '''
-        half_width, half_height = calculate_half_dimensions()
+        half_width, half_height = half_dimensions()
         self.offset.x = player.rect.centerx - half_width
         self.offset.y = player.rect.centery - half_height
         ground_offset_pos = self.ground_rect.topleft - self.offset
@@ -36,8 +36,9 @@ class Camera(pg.sprite.Group):
         '''
         Updates the monsters' positions according to the player's position.
         '''
-        half_width, half_height = calculate_half_dimensions()
-        screen_vector = calculate_screen_vector(half_width, half_height)
+        half_width, half_height = half_dimensions()
+        screen_vector = self.__calc_screen_vector(half_width, half_height,
+                                                  TILE_SIZE)
         monsters = [sprite for sprite in self.sprites()
                     if hasattr(sprite, "custom_update")]
         for monster in monsters:
@@ -49,9 +50,15 @@ class Camera(pg.sprite.Group):
 
     def __sprite_is_visible(self, sprite_rect, player_rect, screen_vector):
         '''
-        Checks if the sprite is visible on the screen.
+        Checks if a sprite is visible on the screen.
         '''
-        distance = calculate_relative_vector(sprite_rect, player_rect)
+        distance = rel_vector(sprite_rect, player_rect)
         if abs(distance.x) > abs(screen_vector.x) or abs(distance.y) > abs(screen_vector.y):
             return True
         return False
+
+    def __calc_screen_vector(self, half_width, half_height, scalar=0):
+        '''
+        Calculates a vector representing the screen plus a scalar.
+        '''
+        return pg.math.Vector2(half_width + scalar, half_height + scalar)

@@ -1,5 +1,5 @@
 '''
-Contains functions to control the CLI.
+Contains methods to help you better visualize the information displayed in the console.
 '''
 import os
 

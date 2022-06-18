@@ -1,3 +1,3 @@
 '''
-Contains modules for the utils.
+Contains some modules used for utility.
 '''

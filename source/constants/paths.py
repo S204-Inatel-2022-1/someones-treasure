@@ -1,6 +1,8 @@
 '''
-Relative paths to some assets.
+Relative paths for some assets.
 '''
+
+FONT = "fonts/PixelGameFont.ttf"
 
 ICON = "images/icons/game-icon.png"
 

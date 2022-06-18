@@ -5,13 +5,19 @@ from source.constants.settings import TILE_SIZE
 
 STATS = {
     "player": {
-        "ammo": 16,
+        "ammo": {
+            "current": None,
+            "max": 16
+        },
         "attack": {
             "cooldown": 750,
             "damage": 1,
             "type": "ranged"
         },
-        "hp": 6,
+        "health": {
+            "current": None,
+            "max": 6
+        },
         "i_frames": 750,
         "knockback_resistance": 7,
         "range": {
@@ -21,13 +27,19 @@ STATS = {
         "speed": 5
     },
     "ghost": {
-        "ammo": None,
+        "ammo": {
+            "current": None,
+            "max": None
+        },
         "attack": {
             "cooldown": 2000,
             "damage": 2,
             "type": "melee"
         },
-        "hp": 1,
+        "health": {
+            "current": None,
+            "max": 1
+        },
         "i_frames": 500,
         "knockback_resistance": 7,
         "range": {
@@ -37,13 +49,19 @@ STATS = {
         "speed": 3
     },
     "skeleton": {
-        "ammo": None,
+        "ammo": {
+            "current": None,
+            "max": None
+        },
         "attack": {
             "cooldown": 1000,
             "damage": 2,
             "type": "ranged"
         },
-        "hp": 3,
+        "health": {
+            "current": None,
+            "max": 2
+        },
         "i_frames": 500,
         "knockback_resistance": 7,
         "range": {
@@ -53,13 +71,19 @@ STATS = {
         "speed": 4
     },
     "slime": {
-        "ammo": None,
+        "ammo": {
+            "current": None,
+            "max": None
+        },
         "attack": {
             "cooldown": 1500,
             "damage": 1,
             "type": "melee"
         },
-        "hp": 2,
+        "health": {
+            "current": None,
+            "max": 2
+        },
         "i_frames": 500,
         "knockback_resistance": 7,
         "range": {
@@ -69,13 +93,19 @@ STATS = {
         "speed": 2
     },
     "rat": {
-        "ammo": None,
+        "ammo": {
+            "current": None,
+            "max": None
+        },
         "attack": {
             "cooldown": 1500,
             "damage": 2,
             "type": "ranged"
         },
-        "hp": 3,
+        "health": {
+            "current": None,
+            "max": 3
+        },
         "i_frames": 500,
         "knockback_resistance": 7,
         "range": {

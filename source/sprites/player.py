@@ -10,38 +10,28 @@ from source.sprites.entity import Entity
 
 class Player(Entity):
     '''
-    Class for the player.
+    Class used to represent the player.
     '''
 
     def __init__(self, groups, obstacles, pos, shot_projectile):
         super().__init__(groups, obstacles, pos, "player")
         self.stats = STATS["player"]
-        self.health = self.stats["hp"]
-        self.ammo = self.stats["ammo"]
+        self.health = self.stats["health"]["max"]
+        self.ammo = self.stats["ammo"]["max"]
         self.last_attack = 0
         self.last_hit = 0
-        self.death_sfx = pg.mixer.Sound(SFX["death"]["player"])
         self.shot_projectile = shot_projectile
-        self.death_time = 0
 
     def update(self):
         '''
         Basic update method.
         '''
-        # self.__knockback()
         self.__input()
         self._reset_timers()
         self._validate_state()
         self._animate()
-        self._move(self.stats["speed"])
+        self.move(self.stats["speed"])
         self.__check_death()
-
-    def __knockback(self):
-        '''
-        Not used... yet.
-        '''
-        if not self.vulnerable:
-            self.direction *= self.stats["knockback_resistance"] - 64
 
     def __input(self):
         '''
@@ -107,7 +97,7 @@ class Player(Entity):
 
     def __shot(self):
         '''
-        Creates a new projectile and shoots it.
+        Creates a new projectile and fires it.
         '''
         self.ammo -= 1
         damage = self.stats["attack"]["damage"]
@@ -129,7 +119,7 @@ class Player(Entity):
 
     def _validate_state(self):
         '''
-        Validates the player's state.
+        Validates player state.
         '''
         if self.direction.x == 0 and self.direction.y == 0:
             if not "idle" in self.state and not "attack" in self.state:
@@ -148,12 +138,13 @@ class Player(Entity):
     def __check_death(self):
         if self.health <= 0:
             self.kill()
-            self.death_sfx.play()
-            self.death_time = pg.time.get_ticks()
+            death_sfx = pg.mixer.Sound(SFX["death"]["player"])
+            death_sfx.play()
 
     def take_damage(self, amount):
         '''
-        If the player is not vulnerable, the damage is ignored.
+        The player takes a certain amount of damage.
+        If they are not vulnerable, the damage is ignored.
         '''
         if self.vulnerable and self.health > 0:
             self.health -= amount
@@ -162,9 +153,9 @@ class Player(Entity):
 
     def collect_ammo(self, amount):
         '''
-        Recovers an ammount of the player's ammo.
+        Recovers a certain ammount of the player's ammunition.
         '''
-        if self.ammo + amount <= self.stats["ammo"]:
+        if self.ammo + amount <= self.stats["ammo"]["max"]:
             self.ammo += amount
         else:
-            self.ammo = self.stats["ammo"]
+            self.ammo = self.stats["ammo"]["max"]

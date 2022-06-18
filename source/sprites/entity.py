@@ -15,13 +15,10 @@ class Entity(pg.sprite.Sprite):
 
     def __init__(self, groups, obstacles, pos, name):
         super().__init__(groups)
-        self.style = "monster" if name != "player" else name
         self.obstacles = obstacles
         self.direction = pg.math.Vector2(0, 0)
-        if self.style == "player":
-            self.__import_animations(name)
-        elif self.style == "monster":
-            self.__import_animations(f"monsters/{name}")
+        style = "monster" if name != "player" else name
+        self.animations = self.__import_animations(style, name)
         self.state = "down"
         self.image = self.animations[self.state][0]
         self.rect = self.image.get_rect(topleft=pos)
@@ -32,17 +29,25 @@ class Entity(pg.sprite.Sprite):
         self.frame = 0
         self.animation_speed = 0.15
 
-    def __import_animations(self, folder_name_path):
-        self.animations = {
+    def __import_animations(self, style, name):
+        '''
+        Imports the animations of the entity.
+        '''
+        if style == "player":
+            folder_name_path = "player/"
+        elif style == "monster":
+            folder_name_path = f"monsters/{name}"
+        animations = animation_list = {
             "up": [], "down": [], "left": [], "right": [],
             "right_idle": [], "left_idle": [], "up_idle": [], "down_idle": [],
             "right_attack": [], "left_attack": [], "up_attack": [], "down_attack": []
         }
-        for animation in self.animations:
+        for animation in animation_list:
             path = f"images/{folder_name_path}/{animation}"
-            self.animations[animation] = import_folder(path)
+            animations[animation] = import_folder(path)
+        return animations
 
-    def _move(self, speed):
+    def move(self, speed):
         '''
         Moves the entity.
         '''
@@ -93,11 +98,14 @@ class Entity(pg.sprite.Sprite):
                 self.image.set_alpha(255)
 
     def __calculate_wave_value(self):
+        '''
+        Calculates the alpha value of the entity.
+        '''
         value = sin(pg.time.get_ticks())
         return 255 if value >= 0 else 0
 
     def toggle_animations(self, value):
         '''
-        Turns animations ON or OFF.
+        Enables or disables animations.
         '''
         self.animated = value
