@@ -1,17 +1,23 @@
+'''
+Contains the Player class.
+'''
 import pygame as pg
-from source.constants.paths import *
-from source.constants.stats import *
+
+from source.constants.paths import SFX
+from source.constants.stats import STATS
 from source.sprites.entity import Entity
-from source.sprites.projectile import Projectile
 
 
 class Player(Entity):
+    '''
+    Class for the player.
+    '''
+
     def __init__(self, groups, obstacles, pos, shot_projectile):
         super().__init__(groups, obstacles, pos, "player")
         self.stats = STATS["player"]
-        self.hp = self.stats["hp"]
+        self.health = self.stats["hp"]
         self.ammo = self.stats["ammo"]
-        self.attacking = False
         self.last_attack = 0
         self.last_hit = 0
         self.death_sfx = pg.mixer.Sound(SFX["death"]["player"])
@@ -19,6 +25,9 @@ class Player(Entity):
         self.death_time = 0
 
     def update(self):
+        '''
+        Basic update method.
+        '''
         # self.__knockback()
         self.__input()
         self._reset_timers()
@@ -28,6 +37,9 @@ class Player(Entity):
         self.__check_death()
 
     def __knockback(self):
+        '''
+        Not used... yet.
+        '''
         if not self.vulnerable:
             self.direction *= self.stats["knockback_resistance"] - 64
 
@@ -38,6 +50,9 @@ class Player(Entity):
             self.__attack_input(keys)
 
     def __movement_input(self, keys):
+        '''
+        Gets the player's movement input.
+        '''
         # Vertical
         if keys[pg.K_w]:
             self.direction.y = -1
@@ -58,6 +73,9 @@ class Player(Entity):
             self.direction.x = 0
 
     def __attack_input(self, keys):
+        '''
+        Gets the player's attack input.
+        '''
         attack = False
         if keys[pg.K_UP]:
             attack = True
@@ -78,20 +96,24 @@ class Player(Entity):
                 self.animation_speed *= 2
                 self.__shot()
             else:
-                '''
                 # Something like this
-                sfx = pg.mixer.Sound("sounds/empty_gun.wav")
-                sfx.set_volume(0.5)
-                sfx.play()
-                '''
+                # sfx = pg.mixer.Sound("sounds/empty_gun.wav")
+                # sfx.set_volume(0.5)
+                # sfx.play()
                 pass
 
     def __shot(self):
+        '''
+        Creates a new projectile and shoots it.
+        '''
         self.ammo -= 1
         damage = self.stats["attack"]["damage"]
         self.shot_projectile(self.state, self.rect, damage)
 
     def _reset_timers(self):
+        '''
+        Resets cooldowns.
+        '''
         current_time = pg.time.get_ticks()
         if self.attacking:
             if current_time - self.last_attack >= self.stats["attack"]["cooldown"]:
@@ -103,6 +125,9 @@ class Player(Entity):
                 self.vulnerable = True
 
     def _validate_state(self):
+        '''
+        Validates the player's state.
+        '''
         if self.direction.x == 0 and self.direction.y == 0:
             if not "idle" in self.state and not "attack" in self.state:
                 self.state += "_idle"
@@ -118,23 +143,25 @@ class Player(Entity):
                 self.state = self.state.replace("_attack", "")
 
     def __check_death(self):
-        if self.hp <= 0:
+        if self.health <= 0:
             self.kill()
             self.death_sfx.play()
             self.death_time = pg.time.get_ticks()
 
     def take_damage(self, amount):
-        if self.vulnerable and self.hp > 0:
-            self.hp -= amount
+        '''
+        If the player is not vulnerable, the damage is ignored.
+        '''
+        if self.vulnerable and self.health > 0:
+            self.health -= amount
             self.vulnerable = False
             self.last_hit = pg.time.get_ticks()
 
     def collect_ammo(self, amount):
+        '''
+        Recovers an ammount of the player's ammo.
+        '''
         if self.ammo + amount <= self.stats["ammo"]:
             self.ammo += amount
         else:
             self.ammo = self.stats["ammo"]
-
-    def __shot_projectile(self):
-        Projectile(self.groups(), self.obstacles,
-                   self.targets, self.state, self.rect)

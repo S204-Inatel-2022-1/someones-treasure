@@ -1,3 +1,9 @@
+'''
+Relative paths to some assets.
+'''
+
+ICON = "images/icons/game-icon.png"
+
 MUSIC = {
     "game_over": "audio/music/evretro_8-bit-game-over-sound-tune.wav",
     "main_loop": "audio/music/evretro_8-bit-brisk-music-loop.wav"

@@ -1,11 +1,18 @@
-import pygame as pg
-from abc import abstractclassmethod
+'''
+Contains the base class for all entities.
+'''
 from math import sin
-from source.constants.settings import *
-from source.logic.utils import import_folder
+import pygame as pg
+
+from source.constants.settings import TILE_SIZE
+from source.utils.assets import import_folder
 
 
 class Entity(pg.sprite.Sprite):
+    '''
+    Base class for entities like the player and monsters.
+    '''
+
     def __init__(self, groups, obstacles, pos, name):
         super().__init__(groups)
         self.style = "monster" if name != "player" else name
@@ -20,7 +27,10 @@ class Entity(pg.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0, - TILE_SIZE // 4)
         self.vulnerable = True
+        self.attacking = False
         self.animated = True
+        self.frame = 0
+        self.animation_speed = 0.15
 
     def __import_animations(self, folder_name_path):
         self.animations = {
@@ -28,17 +38,14 @@ class Entity(pg.sprite.Sprite):
             "right_idle": [], "left_idle": [], "up_idle": [], "down_idle": [],
             "right_attack": [], "left_attack": [], "up_attack": [], "down_attack": []
         }
-        for animation in self.animations.keys():
+        for animation in self.animations:
             path = f"images/{folder_name_path}/{animation}"
             self.animations[animation] = import_folder(path)
-        self.frame = 0
-        self.animation_speed = 0.15
-
-    @abstractclassmethod
-    def _validate_state(self):
-        pass
 
     def _move(self, speed):
+        '''
+        Moves the entity.
+        '''
         if self.direction.magnitude() != 0:
             self.direction = self.direction.normalize()
         self.hitbox.x += self.direction.x * speed
@@ -48,7 +55,10 @@ class Entity(pg.sprite.Sprite):
         self.rect.center = self.hitbox.center
 
     def __handle_collisions(self, axis):
-        if self.obstacles != None:
+        '''
+        Handles collisions between the entity and obstacles.
+        '''
+        if self.obstacles is not None:
             for sprite in self.obstacles:
                 if axis == "x":
                     if sprite.hitbox.colliderect(self.hitbox):
@@ -64,12 +74,15 @@ class Entity(pg.sprite.Sprite):
                             self.hitbox.top = sprite.hitbox.bottom
 
     def _animate(self):
+        '''
+        Animates the entity.
+        '''
         if self.animated:
             animation = self.animations[self.state]
             self.frame += self.animation_speed
             if self.frame >= len(animation):
                 if "attack" in self.state:
-                    self._can_attack = False
+                    self.attacking = True
                 self.frame = 0
             self.image = animation[int(self.frame)]
             self.rect = self.image.get_rect(center=self.hitbox.center)
@@ -83,25 +96,8 @@ class Entity(pg.sprite.Sprite):
         value = sin(pg.time.get_ticks())
         return 255 if value >= 0 else 0
 
-    def _calculate_relative_vector(self, sprite_rect):
-        sprite_vector = pg.math.Vector2(sprite_rect.center)
-        self_vector = pg.math.Vector2(self.rect.center)
-        vector = sprite_vector - self_vector
-        return vector
-
-    def _calculate_relative_distance(self, sprite_rect):
-        vector = self._calculate_relative_vector(sprite_rect)
-        distance = vector.magnitude()
-        return distance
-
-    def _calculate_relative_direction(self, sprite_rect):
-        distance = self._calculate_relative_distance(sprite_rect)
-        if distance > 0:
-            vector = self._calculate_relative_vector(sprite_rect)
-            direction = vector.normalize()
-        else:
-            direction = pg.math.Vector2(0, 0)
-        return direction
-
     def toggle_animations(self, value):
+        '''
+        Turns animations ON or OFF.
+        '''
         self.animated = value

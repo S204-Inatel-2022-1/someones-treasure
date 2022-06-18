@@ -1,3 +1,6 @@
+'''
+Contains the statistics of in-game entities.
+'''
 from source.constants.settings import TILE_SIZE
 
 STATS = {
@@ -9,7 +12,7 @@ STATS = {
             "type": "ranged"
         },
         "hp": 6,
-        "i_frames": 1000,
+        "i_frames": 750,
         "knockback_resistance": 7,
         "range": {
             "aggression_radius": None,
@@ -25,7 +28,7 @@ STATS = {
             "type": "melee"
         },
         "hp": 1,
-        "i_frames": 1000,
+        "i_frames": 500,
         "knockback_resistance": 7,
         "range": {
             "aggression_radius": TILE_SIZE * 1,
@@ -41,7 +44,7 @@ STATS = {
             "type": "ranged"
         },
         "hp": 3,
-        "i_frames": 1000,
+        "i_frames": 500,
         "knockback_resistance": 7,
         "range": {
             "aggression_radius": TILE_SIZE * 4,
@@ -57,7 +60,7 @@ STATS = {
             "type": "melee"
         },
         "hp": 2,
-        "i_frames": 1000,
+        "i_frames": 500,
         "knockback_resistance": 7,
         "range": {
             "aggression_radius": TILE_SIZE * 1,
@@ -73,7 +76,7 @@ STATS = {
             "type": "ranged"
         },
         "hp": 3,
-        "i_frames": 1000,
+        "i_frames": 500,
         "knockback_resistance": 7,
         "range": {
             "aggression_radius": TILE_SIZE * 4,
