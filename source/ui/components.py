@@ -2,6 +2,7 @@
 Contains the components for the Player UI.
 '''
 import pygame as pg
+
 from source.constants.settings import TILE_SIZE
 
 

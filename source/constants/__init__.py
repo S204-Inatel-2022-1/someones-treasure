@@ -1,3 +1,3 @@
 '''
-Dummy file for the 'constants' package.
+Contains constants for the game.
 '''
