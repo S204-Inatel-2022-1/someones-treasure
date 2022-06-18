@@ -44,6 +44,9 @@ class Player(Entity):
             self.direction *= self.stats["knockback_resistance"] - 64
 
     def __input(self):
+        '''
+        General input method.
+        '''
         if not self.attacking:
             keys = pg.key.get_pressed()
             self.__movement_input(keys)
