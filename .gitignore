@@ -1,9 +1,12 @@
-# Not ready yet
+# WIP
 images/monsters/skeleton/
 
 # Custom files
 trash/
 test.py
+
+# Visual Studio Code
+.vscode/
 
 # cx_freeze
 setup.py
