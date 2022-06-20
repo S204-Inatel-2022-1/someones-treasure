@@ -11,14 +11,14 @@ class Projectile(pg.sprite.Sprite):
     Class for thrown projectiles.
     '''
 
-    def __init__(self, groups, obstacles, entity_state, entity_rect, damage=1, speed=3, targets_player=False):
+    def __init__(self, groups, obstacles, entity, damage, targets_player=False):
         super().__init__(groups)
         self.obstacles = obstacles
         self.damage = damage
-        self.speed = speed
+        self.speed = 3
         self.targets_player = targets_player
         # State
-        state = entity_state.split("_")[0]
+        state = entity.state.split("_")[0]
         # Image
         self.image = pg.image.load(f"images/projectile/{state}.png")
         self.image = self.image.convert_alpha()
@@ -27,7 +27,7 @@ class Projectile(pg.sprite.Sprite):
         sfx.set_volume(0.2)
         sfx.play()
         # Placement
-        self.__placement(entity_rect, state)
+        self.__placement(entity.rect, state)
 
     def __placement(self, entity_rect, state):
         '''

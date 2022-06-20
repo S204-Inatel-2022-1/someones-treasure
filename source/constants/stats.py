@@ -11,7 +11,7 @@ STATS = {
         },
         "attack": {
             "cooldown": 750,
-            "damage": 1,
+            "damage": 33,
             "type": "ranged"
         },
         "health": {
@@ -19,12 +19,12 @@ STATS = {
             "max": 6
         },
         "i_frames": 750,
-        "knockback_resistance": 7,
+        "knockback_resistance": None,
         "range": {
             "aggression_radius": None,
             "vision_radius": None
         },
-        "speed": 5
+        "speed": 5 * 5
     },
     "ghost": {
         "ammo": {
@@ -32,7 +32,7 @@ STATS = {
             "max": None
         },
         "attack": {
-            "cooldown": 2000,
+            "cooldown": 750,
             "damage": 2,
             "type": "melee"
         },
@@ -41,7 +41,7 @@ STATS = {
             "max": 1
         },
         "i_frames": 500,
-        "knockback_resistance": 7,
+        "knockback_resistance": None,
         "range": {
             "aggression_radius": TILE_SIZE * 1,
             "vision_radius": TILE_SIZE * 6
@@ -63,12 +63,12 @@ STATS = {
             "max": 2
         },
         "i_frames": 500,
-        "knockback_resistance": 7,
+        "knockback_resistance": None,
         "range": {
-            "aggression_radius": TILE_SIZE * 4,
+            "aggression_radius": TILE_SIZE * 5,
             "vision_radius": TILE_SIZE * 6
         },
-        "speed": 4
+        "speed": 3
     },
     "slime": {
         "ammo": {
@@ -76,7 +76,7 @@ STATS = {
             "max": None
         },
         "attack": {
-            "cooldown": 1500,
+            "cooldown": 750,
             "damage": 1,
             "type": "melee"
         },
@@ -85,33 +85,33 @@ STATS = {
             "max": 2
         },
         "i_frames": 500,
-        "knockback_resistance": 7,
+        "knockback_resistance": None,
         "range": {
             "aggression_radius": TILE_SIZE * 1,
             "vision_radius": TILE_SIZE * 4
         },
         "speed": 2
     },
-    "rat": {
+    "abrobra": {
         "ammo": {
             "current": None,
             "max": None
         },
         "attack": {
-            "cooldown": 1500,
-            "damage": 2,
-            "type": "ranged"
+            "cooldown": 750,
+            "damage": 1,
+            "type": "melee"
         },
         "health": {
             "current": None,
-            "max": 3
+            "max": 8
         },
-        "i_frames": 500,
-        "knockback_resistance": 7,
+        "i_frames": 750,
+        "knockback_resistance": None,
         "range": {
-            "aggression_radius": TILE_SIZE * 4,
-            "vision_radius": TILE_SIZE * 6
+            "aggression_radius": TILE_SIZE * 1,
+            "vision_radius": 10000
         },
-        "speed": 4
-    }
+        "speed": 2
+    },
 }

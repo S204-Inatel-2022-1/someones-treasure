@@ -1,12 +1,14 @@
 '''
 Contains the Monster class.
 '''
+from random import randint
 import pygame as pg
 
 from source.constants.paths import SFX
+# from source.constants.settings import TILE_SIZE
 from source.constants.stats import STATS
 from source.sprites.entity import Entity
-from source.utils.calcs import rel_vector, rel_distance, rel_direction
+from source.utils.calcs import rel_direction, rel_distance
 
 
 class Monster(Entity):
@@ -14,34 +16,30 @@ class Monster(Entity):
     Class used to represent a monster.
     '''
 
-    def __init__(self, groups, obstacle_sprites, pos, name, damage_player, shot_projectile=None):
+    def __init__(self, groups, obstacle_sprites, pos, name):
         super().__init__(groups, obstacle_sprites, pos, name)
         self.stats = STATS[name]
         self.health = self.stats["health"]["max"]
         self.name = name
         self.last_attack = 0
         self.last_hit = 0
-        self.can_attack = True
-        self.damage_player = damage_player
-        # self.drop_ammo = drop_ammo
-        self.shot_projectile = shot_projectile
+        self.speed = self.stats["speed"]
+        self.damage = self.stats["attack"]["damage"]
 
     def update(self):
         '''
         Basic update method.
         '''
-        if not self.attacking:
-            self.move(self.stats["speed"])
         self._animate()
         self._reset_timers()
         self.__check_death()
 
-    def custom_update(self, player_rect):
+    def custom_update(self, player):
         '''
         Custom update method.
         '''
-        self._validate_state(player_rect)
-        self.__take_action(player_rect)
+        self._validate_state()
+        self.__take_action(player.rect)
 
     def _reset_timers(self):
         '''
@@ -55,68 +53,41 @@ class Monster(Entity):
             if current_time - self.last_hit >= self.stats["i_frames"]:
                 self.vulnerable = True
 
-    def _validate_state(self, player_rect):
-        '''
-        Validates monster state.
-        '''
-        distance = rel_distance(self.rect, player_rect)
-        if distance > self.stats["range"]["vision_radius"]:
-            if not "idle" in self.state:
-                if "attack" in self.state:
-                    self.state = self.state.replace("attack", "idle")
-                else:
-                    self.state += "_idle"
-        else:
-            if distance <= self.stats["range"]["aggression_radius"]:
-                if not "attack" in self.state:
-                    if "iddle" in self.state:
-                        self.state = self.state.replace("iddle", "attack")
-                    else:
-                        self.state += "_attack"
-            else:
-                if "idle" in self.state:
-                    self.state = self.state.replace("_idle", "")
-                elif "attack" in self.state:
-                    self.state = self.state.replace("_attack", "")
-
     def __take_action(self, player_rect):
         '''
-        Takes action based on the state of the monster.
+        Takes action based on the position of the player.
         '''
-        if "attack" in self.state:
-            if not self.attacking:
-                attack_sfx = pg.mixer.Sound(SFX["attack"][self.name])
-                attack_sfx.set_volume(0.5)
-                if self.stats["attack"]["type"] == "ranged":
-                    vector = rel_vector(self.rect, player_rect)
-                    if vector.x // 1 == 0 or vector.y // 1 == 0:
-                        self.attacking = True
-                        self.last_attack = pg.time.get_ticks()
-                        attack_sfx.play()
-                        self.shot_projectile(self.state, self.rect, self.stats["attack"]["damage"],
-                                             can_hit_player=True)
+        distance = rel_distance(self.rect, player_rect)
+        if not self.attacking:
+            if distance <= self.stats["range"]["aggression_radius"]:
+                damage = self.damage
+                if self.stats["attack"]["type"] != "ranged":
+                    self.__damage_player(damage)
                 else:
-                    self.attacking = True
-                    self.direction = pg.math.Vector2(0, 0)
-                    self.last_attack = pg.time.get_ticks()
-                    self.damage_player(self.stats["attack"]["damage"])
-                    attack_sfx.play()
-            self.direction = pg.math.Vector2(0, 0)
-        elif "idle" in self.state:
-            self.direction = pg.math.Vector2(0, 0)
-        else:
-            self.direction = rel_direction(
-                self.rect, player_rect)
-            if abs(self.direction.x) > abs(self.direction.y):
-                if self.direction.x < 0:
-                    self.state = "left"
+                    self.__shot_projectile(self, damage, True)
+                self.attacking = True
+                self.last_attack = pg.time.get_ticks()
+                sfx = pg.mixer.Sound(SFX["attack"][self.name])
+                sfx.set_volume(0.5)
+                sfx.play()
+            elif distance <= self.stats["range"]["vision_radius"]:
+                self.direction = rel_direction(self.rect, player_rect)
+                direction = rel_direction(self.rect, player_rect)
+                if abs(direction.x) > abs(direction.y):
+                    if direction.x > 0:
+                        self.state = "right"
+                    elif direction.x < 0:
+                        self.state = "left"
                 else:
-                    self.state = "right"
+                    if direction.y > 0:
+                        self.state = "down"
+                    elif direction.y < 0:
+                        self.state = "up"
+                self.move(self.speed)
             else:
-                if self.direction.y < 0:
-                    self.state = "up"
-                else:
-                    self.state = "down"
+                self.direction = pg.math.Vector2(0, 0)
+        else:
+            self.direction = pg.math.Vector2(0, 0)
 
     def __check_death(self):
         '''
@@ -127,7 +98,11 @@ class Monster(Entity):
             death_sfx = pg.mixer.Sound(SFX["death"][self.name])
             death_sfx.set_volume(0.5)
             death_sfx.play()
-            # self.drop_ammo()
+            pos = self.rect.center
+            chance = randint(1, 100)
+            if chance <= 25:
+                qty = randint(1, 3)
+                self._drop_ammo(pos, qty)
 
     def take_damage(self, amount):
         '''
@@ -137,3 +112,48 @@ class Monster(Entity):
             self.health -= amount
             self.vulnerable = False
             self.last_hit = pg.time.get_ticks()
+            sfx = pg.mixer.Sound(SFX["misc"]["hit"])
+            sfx.set_volume(0.3)
+            sfx.play()
+
+    @property
+    def damage_player(self):
+        '''
+        Getter.
+        '''
+        return self.__damage_player
+
+    @damage_player.setter
+    def damage_player(self, function):
+        '''
+        Setter.
+        '''
+        self.__damage_player = function
+
+    @property
+    def shot_projectile(self):
+        '''
+        Getter.
+        '''
+        return self.__shot_projectile
+
+    @shot_projectile.setter
+    def shot_projectile(self, function):
+        '''
+        Setter.
+        '''
+        self.__shot_projectile = function
+
+    @property
+    def drop_ammo(self):
+        '''
+        Getter.
+        '''
+        return self._drop_ammo
+
+    @drop_ammo.setter
+    def drop_ammo(self, function):
+        '''
+        Setter.
+        '''
+        self._drop_ammo = function

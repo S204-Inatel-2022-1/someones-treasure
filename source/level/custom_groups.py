@@ -19,6 +19,11 @@ class CustomGroups(pg.sprite.Group):
         self.obstacles_sprites = pg.sprite.Group()
         self.projectiles_sprites = pg.sprite.Group()
         self.attackable_sprites = pg.sprite.Group()
+        self.collectable_sprites = pg.sprite.Group()
+        self.piston_sprites = pg.sprite.Group()
+        self.button_sprites = pg.sprite.Group()
+        self.boss_walls_sprites = pg.sprite.Group()
+        self.boss_room_sprites = pg.sprite.Group()
 
     def get_groups(self, style, name=None):
         '''
@@ -34,6 +39,18 @@ class CustomGroups(pg.sprite.Group):
             if name == "player":
                 return [self.visible_sprites]
             return [self.visible_sprites, self.attackable_sprites]
+        if style == "collectable":
+            return [self.visible_sprites, self.collectable_sprites]
+        if style == "switch":
+            return [self.visible_sprites, self.button_sprites, self.obstacles_sprites]
+        if style == "piston":
+            return [self.visible_sprites, self.solid_sprites,
+                    self.obstacles_sprites, self.piston_sprites]
+        if style == "boss_wall":
+            return [self.visible_sprites, self.solid_sprites,
+                    self.obstacles_sprites, self.boss_walls_sprites]
+        if style == "boss_room":
+            return [self.boss_room_sprites]
         return [self.visible_sprites, self.projectiles_sprites]
 
     def get_obstacles(self, style, name=None):
@@ -41,9 +58,9 @@ class CustomGroups(pg.sprite.Group):
         Returns obstacles for a given sprite style.
         '''
         if style == "entity":
-            if name == "ghost":
+            if name in ["ghost", "abrobra"]:
                 return None
-            return self.obstacles_sprites
+            return None #self.obstacles_sprites
         return self.solid_sprites
 
     def reset_all_groups(self):
@@ -63,3 +80,4 @@ class CustomGroups(pg.sprite.Group):
         self.obstacles_sprites.empty()
         self.projectiles_sprites.empty()
         self.attackable_sprites.empty()
+        self.collectable_sprites.empty()

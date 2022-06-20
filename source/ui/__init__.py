@@ -36,18 +36,31 @@ class GameOverScreen:
 
     def __init__(self):
         self.display_surface = pg.display.get_surface()
-        self.image = pg.image.load("images/game-over/very_sad_rat.png")
+        self.image_1 = pg.image.load("images/game-over/very_sad_rat.png")
+        self.image_2 = pg.image.load("images/game-over/happy_rat.jpg")
 
-    def display(self):
+    def display_death_msg(self):
         '''
         Displays a message to the player indicating that their character has died.
         '''
         font = pg.font.Font(FONT, 64)
         text = font.render("GAME OVER", False, "red")
         width, height = self.display_surface.get_width(), self.display_surface.get_height()
-        image_rect = self.image.get_rect(center=(width // 2, height // 2))
+        image_rect = self.image_1.get_rect(center=(width // 2, height // 2))
         text_rect = text.get_rect(center=(width // 2, height * 0.75))
-        self.display_surface.blit(self.image, image_rect)
+        self.display_surface.blit(self.image_1, image_rect)
+        self.display_surface.blit(text, text_rect)
+
+    def display_victory_msg(self):
+        '''
+        Displays a message to the player indicating that their character has won.
+        '''
+        font = pg.font.Font(FONT, 64)
+        text = font.render("VICTORY", False, "green")
+        width, height = self.display_surface.get_width(), self.display_surface.get_height()
+        image_rect = self.image_2.get_rect(center=(width // 2, height))
+        text_rect = text.get_rect(center=(width // 2, height // 2))
+        self.display_surface.blit(self.image_2, image_rect)
         self.display_surface.blit(text, text_rect)
 
     def show_continue_msg(self):
@@ -96,6 +109,7 @@ class StartMenu:
         self.title_rect = None
         self.button_1_rect = None
         self.button_2_rect = None
+        self.image = pg.image.load("images/start-menu/tips.png")
 
     def display(self):
         '''
@@ -108,9 +122,11 @@ class StartMenu:
                                                             height * 0.65))
         self.button_2_rect = self.button_2.get_rect(center=(width // 2,
                                                             height * 0.85))
+        image_rect = self.image.get_rect(center=(width // 2, height // 2))
         self.display_surface.blit(self.title, self.title_rect)
         self.display_surface.blit(self.button_1, self.button_1_rect)
         self.display_surface.blit(self.button_2, self.button_2_rect)
+        self.display_surface.blit(self.image, image_rect)
 
     def button_pressed(self, mouse_pos):
         '''

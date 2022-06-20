@@ -19,7 +19,7 @@ class Entity(pg.sprite.Sprite):
         self.direction = pg.math.Vector2(0, 0)
         style = "monster" if name != "player" else name
         self.animations = self.__import_animations(style, name)
-        self.state = "down"
+        self.state = "down_idle"
         self.image = self.animations[self.state][0]
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0, - TILE_SIZE // 4)
@@ -109,3 +109,21 @@ class Entity(pg.sprite.Sprite):
         Enables or disables animations.
         '''
         self.animated = value
+
+    def _validate_state(self):
+        '''
+        Validates player state.
+        '''
+        if self.direction.x == 0 and self.direction.y == 0:
+            if "idle" not in self.state and "attack" not in self.state:
+                self.state += "_idle"
+        if self.attacking:
+            self.direction = pg.Vector2(0, 0)
+            if "attack" not in self.state:
+                if "idle" in self.state:
+                    self.state = self.state.replace("_idle", "_attack")
+                else:
+                    self.state += "_attack"
+        else:
+            if "attack" in self.state:
+                self.state = self.state.replace("_attack", "")

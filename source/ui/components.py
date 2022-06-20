@@ -21,7 +21,7 @@ class AmmoBar:
         self.__update_text()
 
     def __import_graphics(self):
-        self.image = pg.image.load("images/projectile/right.png")
+        self.image = pg.image.load("images/projectile/ammo.png")
         x, y = TILE_SIZE // 4, TILE_SIZE
         self.rect = self.image.get_rect(topleft=(x, y))
 
@@ -39,7 +39,7 @@ class AmmoBar:
             self.ammo = ammo
             self.__update_text()
         self.display_surface.blit(self.image, self.rect)
-        self.display_surface.blit(self.text, (TILE_SIZE, TILE_SIZE))
+        self.display_surface.blit(self.text, (TILE_SIZE + 10, TILE_SIZE + 10))
 
     def update_max_ammo(self, max_ammo):
         '''

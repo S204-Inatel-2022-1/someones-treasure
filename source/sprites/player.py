@@ -13,14 +13,29 @@ class Player(Entity):
     Class used to represent the player.
     '''
 
-    def __init__(self, groups, obstacles, pos, shot_projectile):
+    def __init__(self, groups, obstacles, pos):
         super().__init__(groups, obstacles, pos, "player")
         self.stats = STATS["player"]
         self.health = self.stats["health"]["max"]
         self.ammo = self.stats["ammo"]["max"]
         self.last_attack = 0
         self.last_hit = 0
-        self.shot_projectile = shot_projectile
+        self.speed = self.stats["speed"]
+        self.damage = self.stats["attack"]["damage"]
+
+    @property
+    def shot_projectile(self):
+        '''
+        Getter.
+        '''
+        return self.__shot_projectile
+
+    @shot_projectile.setter
+    def shot_projectile(self, function):
+        '''
+        Setter.
+        '''
+        self.__shot_projectile = function
 
     def update(self):
         '''
@@ -30,7 +45,7 @@ class Player(Entity):
         self._reset_timers()
         self._validate_state()
         self._animate()
-        self.move(self.stats["speed"])
+        self.move(self.speed)
         self.__check_death()
 
     def __input(self):
@@ -100,8 +115,8 @@ class Player(Entity):
         Creates a new projectile and fires it.
         '''
         self.ammo -= 1
-        damage = self.stats["attack"]["damage"]
-        self.shot_projectile(self.state, self.rect, damage)
+        damage = self.damage
+        self.__shot_projectile(self, damage)
 
     def _reset_timers(self):
         '''
@@ -116,24 +131,6 @@ class Player(Entity):
         if not self.vulnerable:
             if current_time - self.last_hit >= self.stats["i_frames"]:
                 self.vulnerable = True
-
-    def _validate_state(self):
-        '''
-        Validates player state.
-        '''
-        if self.direction.x == 0 and self.direction.y == 0:
-            if not "idle" in self.state and not "attack" in self.state:
-                self.state += "_idle"
-        if self.attacking:
-            self.direction = pg.Vector2(0, 0)
-            if not "attack" in self.state:
-                if "idle" in self.state:
-                    self.state = self.state.replace("_idle", "_attack")
-                else:
-                    self.state += "_attack"
-        else:
-            if "attack" in self.state:
-                self.state = self.state.replace("_attack", "")
 
     def __check_death(self):
         if self.health <= 0:
@@ -151,7 +148,7 @@ class Player(Entity):
             self.vulnerable = False
             self.last_hit = pg.time.get_ticks()
 
-    def collect_ammo(self, amount):
+    def recover_ammo(self, amount):
         '''
         Recovers a certain ammount of the player's ammunition.
         '''

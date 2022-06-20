@@ -28,6 +28,7 @@ class Game:
         # Game State
         self.game_state = "start"
         self.death_time = 0
+        self.boss_fight = False
         # Clock
         self.clock = pg.time.Clock()
         # UI
@@ -47,31 +48,54 @@ class Game:
             self.clock.tick(FPS)
             self.window.fill("black")
             for event in pg.event.get():
-                if event.type == pg.QUIT:
-                    self.close()
-                if self.game_state != "start":
-                    if event.type == pg.KEYDOWN:
-                        if event.key == pg.K_ESCAPE:
-                            self.close()
-                        elif event.key == pg.K_RETURN:
-                            self.__start_button()
-                elif event.type == pg.MOUSEBUTTONUP:
-                    value = self.start_menu.button_pressed(pg.mouse.get_pos())
-                    if value == 1:
-                        self.level = Level(0)
-                        pg.mixer.music.play(-1)
-                        self.game_state = "running"
-                    elif value == -1:
-                        self.close()
-            if self.game_state != "start":
+                self.__handle_events(event)
+            if self.game_state not in ["start", "victory"]:
                 if self.level.player_alive():
                     self.__update_level()
+                    if self.boss_fight:
+                        if not self.level.boss_alive():
+                            pg.mixer.music.stop()
+                            music = pg.mixer.Sound(MUSIC["victory"])
+                            music.set_volume(0.3)
+                            music.play()
+                            self.game_state = "victory"
+                    elif self.level.fighting_boss:
+                        self.boss_fight = True
+                        pg.mixer.music.stop()
+                        pg.mixer.music.load(MUSIC["boss_battle"])
+                        pg.mixer.music.set_volume(0.2)
+                        pg.mixer.music.play(-1)
                 else:
                     self.__show_game_over()
-            else:
+            elif self.game_state == "start":
                 self.start_menu.display()
-            display_info(int(self.clock.get_fps()))
+            else:
+                self.game_over_screen.display_victory_msg()
+            display_info(f"FPS: {int(self.clock.get_fps())}")
             pg.display.update()
+
+    def __handle_events(self, event):
+        '''
+        Handles events.
+        '''
+        if event.type == pg.QUIT:
+            self.close()
+        elif event.type == pg.KEYDOWN:
+            if event.key == pg.K_ESCAPE:
+                self.close()
+            if self.game_state != "start":
+                if event.key == pg.K_RETURN:
+                    self.__start_button()
+                if event.key == pg.K_z:
+                    self.level.player.take_damage(1000)
+        elif event.type == pg.MOUSEBUTTONUP and self.game_state == "start":
+            value = self.start_menu.button_pressed(pg.mouse.get_pos())
+            if value == 1:
+                self.level = Level(0)
+                pg.mixer.music.play(-1)
+                self.game_state = "running"
+            elif value == -1:
+                self.close()
 
     def close(self):
         '''
@@ -97,12 +121,12 @@ class Game:
         '''
         if not self.game_state in ["game over", "continue"]:
             pg.mixer.music.stop()
-            game_over_music = pg.mixer.Sound(MUSIC["game_over"])
-            game_over_music.set_volume(0.3)
-            game_over_music.play()
+            music = pg.mixer.Sound(MUSIC["game_over"])
+            music.set_volume(0.3)
+            music.play()
             self.death_time = pg.time.get_ticks()
         self.game_state = "game over"
-        self.game_over_screen.display()
+        self.game_over_screen.display_death_msg()
         time_difference = pg.time.get_ticks() - self.death_time
         if time_difference > 5500 and self.game_state != "continue":
             self.game_state = "continue"
@@ -120,8 +144,12 @@ class Game:
             self.game_state = "pause" if self.game_state == "running" else "running"
         elif self.game_state == "continue":
             self.level.reset()
+            pg.mixer.music.stop()
+            pg.mixer.music.load(MUSIC["main_loop"])
+            pg.mixer.music.set_volume(0.2)
             pg.mixer.music.play(-1)
             self.game_state = "running"
+            self.death_time = 0
 
 
 if __name__ == "__main__":
