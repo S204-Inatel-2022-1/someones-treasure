@@ -11,7 +11,7 @@ STATS = {
         },
         "attack": {
             "cooldown": 750,
-            "damage": 33,
+            "damage": 1,
             "type": "ranged"
         },
         "health": {
@@ -24,7 +24,7 @@ STATS = {
             "aggression_radius": None,
             "vision_radius": None
         },
-        "speed": 5 * 5
+        "speed": 5
     },
     "ghost": {
         "ammo": {

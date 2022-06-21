@@ -60,7 +60,7 @@ class CustomGroups(pg.sprite.Group):
         if style == "entity":
             if name in ["ghost", "abrobra"]:
                 return None
-            return None #self.obstacles_sprites
+            return self.obstacles_sprites
         return self.solid_sprites
 
     def reset_all_groups(self):
